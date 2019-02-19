@@ -4,4 +4,5 @@
     <string name="title_activity_shopping_lists">ShoppingListsActivity</string>
     <string name="title_activity_statistics">StatisticsActivity</string>
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
+    <string name="title_activity_create_list">CreateList</string>
 </resources>

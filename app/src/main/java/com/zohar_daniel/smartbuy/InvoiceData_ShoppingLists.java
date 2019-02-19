@@ -11,9 +11,10 @@ public class InvoiceData_ShoppingLists {
     private String storeName;
     private String city;
     private String date;
+    private String listID;
     private double invoiceAmount;
 
-    public InvoiceData_ShoppingLists(String chainName, String storeName, String city, String date, double invoiceAmount, String chainID, String storeID) {
+    public InvoiceData_ShoppingLists(String chainName, String storeName, String city, String date, double invoiceAmount, String chainID, String storeID, String listID) {
         this.storeID = storeID;
         this.storeName=storeName;
         this.chainID = chainID;
@@ -21,6 +22,10 @@ public class InvoiceData_ShoppingLists {
         this.city = city;
         this.date = date;
         this.invoiceAmount = invoiceAmount;
+    }
+
+    public String getListID() {
+        return listID;
     }
 
     public String getStoreID() {

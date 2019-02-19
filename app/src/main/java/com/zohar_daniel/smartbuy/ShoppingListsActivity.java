@@ -34,25 +34,24 @@ public class ShoppingListsActivity extends AppCompatActivity {
 
         dataModels = new ArrayList<>();
 
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
+
 
         adapter= new CustomAdapter_ShoppingLists(dataModels,getApplicationContext());
 
@@ -60,21 +59,34 @@ public class ShoppingListsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO send listID to the SQL database - dataModels.get(position).getListID();
+                moveToList(view);
+            }
+        });
 
-                //DataModel dataModel= dataModels.get(position);
-
-                //Snackbar.make(view, dataModel.getName()+"\n"+dataModel.getType()+" API: "+dataModel.getVersion_number(), Snackbar.LENGTH_LONG)
-                        //.setAction("No action", null).show();
-
-                moveToScreen(view);
+        FloatingActionButton fab = findViewById(R.id.fab_lists);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                */
+                moveToCreateList(view);
             }
         });
     }
 
-    public void moveToScreen(View view)
-    {
+    public void moveToList(View view) {
         Intent intent = null;
         intent = new Intent(this, ShoppingListActivity.class);
+        startActivity(intent);
+    }
+
+    public void moveToCreateList(View view)
+    {
+        Intent intent = null;
+        intent = new Intent(this, CreateListActivity.class);
         startActivity(intent);
     }
 

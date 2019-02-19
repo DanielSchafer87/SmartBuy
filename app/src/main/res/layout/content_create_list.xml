@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".CreateListActivity"
+    tools:showIn="@layout/activity_create_list">
+
+    <TextView
+        android:id="@+id/selectChainName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="בחר רשת"
+        android:textColor="@android:color/black" />
+
+    <Spinner
+        android:id="@+id/spinner_chain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectChainName"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
+
+    <TextView
+        android:id="@+id/selectStoreName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_chain"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="בחר רשת"
+        android:textColor="@android:color/black" />
+
+    <Spinner
+        android:id="@+id/spinner_store"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectStoreName"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
+
+        <Button
+            android:id="@+id/btnCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_below="@+id/spinner_store"
+            android:layout_centerHorizontal="true"
+            android:text="צילום רשימת קניות"
+            >
+        </Button>
+        <Button
+            android:id="@+id/btnManual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCamera"
+            android:layout_centerHorizontal="true"
+            android:text="הזנה ידנית"
+            >
+        </Button>
+
+</RelativeLayout>
+
