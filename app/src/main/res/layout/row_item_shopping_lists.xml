@@ -1,0 +1,54 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:id="@+id/row_shopping_lists"
+    >
+
+    <TextView
+        android:id="@+id/chainName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="רמי לוי"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black" />
+
+
+    <TextView
+        android:id="@+id/storeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/chainName"
+        android:layout_marginTop="5dp"
+        android:text="עפולה"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/invoiceAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="₪102.34"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/invoiceDate_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23.01.19"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+</RelativeLayout>

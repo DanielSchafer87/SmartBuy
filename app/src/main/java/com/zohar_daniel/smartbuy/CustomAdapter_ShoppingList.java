@@ -1,36 +1,28 @@
 package com.zohar_daniel.smartbuy;
 
-
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class CustomAdapter extends ArrayAdapter<InvoiceData> implements View.OnClickListener{
+public class CustomAdapter_ShoppingList extends ArrayAdapter<InvoiceData_ShoppingList> implements View.OnClickListener{
 
-    private ArrayList<InvoiceData> dataSet;
+    private ArrayList<InvoiceData_ShoppingList> dataSet;
     Context mContext;
 
     // View lookup cache
     private static class ViewHolder {
-        TextView txtStoreName;
-        TextView txtBranchName;
-        TextView date;
-        TextView amount;
+        TextView txtItemName;
+        TextView txtItemPrice;
+        TextView txtItemAmount;
     }
 
-    public CustomAdapter(ArrayList<InvoiceData> data, Context context) {
-        super(context, R.layout.row_item, data);
+    public CustomAdapter_ShoppingList(ArrayList<InvoiceData_ShoppingList> data, Context context) {
+        super(context, R.layout.row_item_shopping_list, data);
         this.dataSet = data;
         this.mContext=context;
     }
@@ -40,11 +32,11 @@ public class CustomAdapter extends ArrayAdapter<InvoiceData> implements View.OnC
 
         int position=(Integer) v.getTag();
         Object object= getItem(position);
-        InvoiceData dataModel=(InvoiceData)object;
+        InvoiceData_ShoppingList dataModel=(InvoiceData_ShoppingList)object;
 
         switch (v.getId())
         {
-            case R.id.row:
+            case R.id.row_shopping_lists:
                 //TODO send invoice id to sql to get the list on items.
                 break;
         }
@@ -55,7 +47,7 @@ public class CustomAdapter extends ArrayAdapter<InvoiceData> implements View.OnC
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        InvoiceData dataModel = getItem(position);
+        InvoiceData_ShoppingList dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -65,11 +57,10 @@ public class CustomAdapter extends ArrayAdapter<InvoiceData> implements View.OnC
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.row_item, parent, false);
-            viewHolder.txtStoreName = (TextView) convertView.findViewById(R.id.storeName);
-            viewHolder.txtBranchName = (TextView) convertView.findViewById(R.id.branchName);
-            viewHolder.date = (TextView) convertView.findViewById(R.id.invoiceDate_date);
-            viewHolder.amount = (TextView) convertView.findViewById(R.id.invoiceAmount);
+            convertView = inflater.inflate(R.layout.row_item_shopping_list, parent, false);
+            viewHolder.txtItemName = (TextView) convertView.findViewById(R.id.itemName);
+            viewHolder.txtItemPrice = (TextView) convertView.findViewById(R.id.itemPrice);
+            viewHolder.txtItemAmount = (TextView) convertView.findViewById(R.id.itemAmount);
 
             result=convertView;
 
@@ -83,12 +74,10 @@ public class CustomAdapter extends ArrayAdapter<InvoiceData> implements View.OnC
         //result.startAnimation(animation);
         //lastPosition = position;
 
-        viewHolder.txtStoreName.setText(dataModel.getStoreName());
-        viewHolder.txtBranchName.setText(dataModel.getBranchName());
-        viewHolder.date.setText(dataModel.getDate().toString());
-        viewHolder.amount.setText(dataModel.getInvoiceAmount().toString());
+        viewHolder.txtItemName.setText(dataModel.getItemName());
+        viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getItemAmount()));
+        viewHolder.txtItemPrice.setText(String.valueOf(dataModel.getItemPrice()));
         // Return the completed view to render on screen
         return convertView;
     }
 }
-

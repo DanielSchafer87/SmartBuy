@@ -1,5 +1,6 @@
 package com.zohar_daniel.smartbuy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 
 public class ShoppingListsActivity extends AppCompatActivity {
 
-    ArrayList<InvoiceData> dataModels;
+    ArrayList<InvoiceData_ShoppingLists> dataModels;
     ListView listView;
-    private static CustomAdapter adapter;
+    private static CustomAdapter_ShoppingLists adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,36 +30,31 @@ public class ShoppingListsActivity extends AppCompatActivity {
         toolbar.setTitle("רשימות הקניות שלי");
         setSupportActionBar(toolbar);
 
-        listView=(ListView)findViewById(R.id.list);
+        listView=(ListView)findViewById(R.id.shopping_lists);
 
-        dataModels= new ArrayList<>();
+        dataModels = new ArrayList<>();
 
-        //InvoiceData data = new InvoiceData("רמי לוי", "חיפה", Date.valueOf("12.12.12"),(BigDecimal.valueOf(123.32)));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
+        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1"));
 
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-        dataModels.add(new InvoiceData("רמי לוי", "חיפה", "12/12/1992",(BigDecimal.valueOf(123.32))));
-
-
-
-
-        adapter= new CustomAdapter(dataModels,getApplicationContext());
+        adapter= new CustomAdapter_ShoppingLists(dataModels,getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,10 +65,17 @@ public class ShoppingListsActivity extends AppCompatActivity {
 
                 //Snackbar.make(view, dataModel.getName()+"\n"+dataModel.getType()+" API: "+dataModel.getVersion_number(), Snackbar.LENGTH_LONG)
                         //.setAction("No action", null).show();
+
+                moveToScreen(view);
             }
         });
     }
 
-
+    public void moveToScreen(View view)
+    {
+        Intent intent = null;
+        intent = new Intent(this, ShoppingListActivity.class);
+        startActivity(intent);
+    }
 
 }
