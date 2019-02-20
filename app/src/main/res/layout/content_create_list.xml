@@ -43,25 +43,42 @@
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner_store"
+        android:id="@+id/buttons"
+        >
         <Button
             android:id="@+id/btnCamera"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_weight="1"
             android:layout_below="@+id/spinner_store"
             android:layout_centerHorizontal="true"
             android:text="צילום רשימת קניות"
+            android:onClick="dispatchTakePictureIntent"
             >
         </Button>
         <Button
             android:id="@+id/btnManual"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_below="@+id/btnCamera"
             android:layout_centerHorizontal="true"
             android:text="הזנה ידנית"
             >
         </Button>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/buttons"
+        />
 
 </RelativeLayout>
 
