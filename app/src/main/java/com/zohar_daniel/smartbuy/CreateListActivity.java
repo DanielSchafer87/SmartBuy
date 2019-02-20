@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -23,10 +26,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.google.firebase.ml.vision.text.RecognizedLanguage;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static android.Manifest.permission.CAMERA;
 
@@ -124,7 +137,52 @@ public class CreateListActivity extends AppCompatActivity {
 
             Bitmap photo = BitmapFactory.decodeFile(mCurrentPhotoPath);
             imageView.setImageBitmap(photo);
-/*
+
+            FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(photo);
+            FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+
+            Task<FirebaseVisionText> result =
+                    detector.processImage(image)
+                            .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                                @Override
+                                public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                                    // Task completed successfully
+                                    // ...
+                                }
+                            })
+                            .addOnFailureListener(
+                                    new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Task failed with an exception
+                                            // ...
+                                        }
+                                    });
+
+            FirebaseVisionText resultText = result.getResult();
+            for (FirebaseVisionText.TextBlock block: resultText.getTextBlocks()) {
+                String blockText = block.getText();
+                Float blockConfidence = block.getConfidence();
+                List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
+                Point[] blockCornerPoints = block.getCornerPoints();
+                Rect blockFrame = block.getBoundingBox();
+                for (FirebaseVisionText.Line line: block.getLines()) {
+                    String lineText = line.getText();
+                    Float lineConfidence = line.getConfidence();
+                    List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
+                    Point[] lineCornerPoints = line.getCornerPoints();
+                    Rect lineFrame = line.getBoundingBox();
+                    for (FirebaseVisionText.Element element: line.getElements()) {
+                        String elementText = element.getText();
+                        Float elementConfidence = element.getConfidence();
+                        List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
+                        Point[] elementCornerPoints = element.getCornerPoints();
+                        Rect elementFrame = element.getBoundingBox();
+                    }
+                }
+            }
+
+            /*
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"raul.pop90@gmail.com"});
