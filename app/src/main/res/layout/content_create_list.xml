@@ -54,10 +54,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_below="@+id/spinner_store"
-            android:layout_centerHorizontal="true"
             android:text="צילום רשימת קניות"
-            android:onClick="dispatchTakePictureIntent"
+            android:onClick="moveToScreen"
             >
         </Button>
         <Button
@@ -65,20 +63,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_below="@+id/btnCamera"
-            android:layout_centerHorizontal="true"
             android:text="הזנה ידנית"
+            android:onClick="moveToScreen"
             >
         </Button>
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/imageView"
-        android:layout_below="@+id/buttons"
-        />
 
 </RelativeLayout>
 
