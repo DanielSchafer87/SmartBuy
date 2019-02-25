@@ -1,6 +1,7 @@
 package com.zohar_daniel.smartbuy;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,7 +11,11 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.zohar_daniel.smartbuy.Models.ShoppingList;
+
 public class MainActivity extends AppCompatActivity {
+
+    protected final  String databaseName = "shoppingLists.db";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +25,13 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        DatabaseHelper h = new DatabaseHelper(getApplicationContext(),databaseName , null , 1);
+        SQLiteDatabase db =  h.getWritableDatabase();
 
+        ShoppingList l = new ShoppingList(7,"שופרסל דיל נווה שאנן",5,"שפרסל","20/12/2018","חיפה");
+        h.addList(l);
+        h.allLists();
+      // h.DeleteTbl(ShoppingListsSchema.LISTS_TABLE);
     }
 
     @Override
@@ -61,5 +72,11 @@ public class MainActivity extends AppCompatActivity {
         if(intent !=null)
             startActivity(intent);
 
+    }
+
+    public void kuku()
+    {
+
+        String k = "Heyy i'm kuku";
     }
 }

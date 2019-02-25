@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.zohar_daniel.smartbuy.Models.ShoppingList;
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class CustomAdapter_ShoppingLists extends ArrayAdapter<InvoiceData_ShoppingLists> implements View.OnClickListener{
+public class CustomAdapter_ShoppingLists extends ArrayAdapter<ShoppingList> implements View.OnClickListener{
 
-    private ArrayList<InvoiceData_ShoppingLists> dataSet;
+    private List<ShoppingList> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -23,15 +26,16 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<InvoiceData_Shoppi
         TextView amount;
     }
 
-    public CustomAdapter_ShoppingLists(ArrayList<InvoiceData_ShoppingLists> data, Context context) {
+    public CustomAdapter_ShoppingLists(List<ShoppingList> data, Context context) {
         super(context, R.layout.row_item_shopping_lists, data);
         this.dataSet = data;
         this.mContext=context;
     }
 
+
     @Override
     public void onClick(View v) {
-
+        /*
         int position=(Integer) v.getTag();
         Object object= getItem(position);
         InvoiceData_ShoppingLists dataModel=(InvoiceData_ShoppingLists)object;
@@ -42,6 +46,7 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<InvoiceData_Shoppi
                 //TODO send invoice id to sql to get the list on items.
                 break;
         }
+        */
     }
 
     private int lastPosition = -1;
@@ -49,7 +54,7 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<InvoiceData_Shoppi
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        InvoiceData_ShoppingLists dataModel = getItem(position);
+        ShoppingList dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -79,8 +84,9 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<InvoiceData_Shoppi
 
         viewHolder.txtStoreName.setText(dataModel.getStoreName());
         viewHolder.txtChainName.setText(dataModel.getChainName());
-        viewHolder.date.setText(dataModel.getDate());
-        viewHolder.amount.setText(String.valueOf(dataModel.getInvoiceAmount()));
+        viewHolder.date.setText(dataModel.getCreatedOn());
+        //TODO calculate amount in SQL and create method to get the amount.
+        viewHolder.amount.setText(String.valueOf(123.32));
         // Return the completed view to render on screen
         return convertView;
     }

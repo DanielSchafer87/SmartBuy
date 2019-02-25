@@ -7,11 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class CustomAdapter_ShoppingList extends ArrayAdapter<InvoiceData_ShoppingList> implements View.OnClickListener{
+public class CustomAdapter_ShoppingList extends ArrayAdapter<ShoppingListItem> implements View.OnClickListener{
 
-    private ArrayList<InvoiceData_ShoppingList> dataSet;
+    private List<ShoppingListItem> dataSet;
     Context mContext;
 
     // View lookup cache
@@ -21,7 +24,7 @@ public class CustomAdapter_ShoppingList extends ArrayAdapter<InvoiceData_Shoppin
         TextView txtItemAmount;
     }
 
-    public CustomAdapter_ShoppingList(ArrayList<InvoiceData_ShoppingList> data, Context context) {
+    public CustomAdapter_ShoppingList(List<ShoppingListItem> data, Context context) {
         super(context, R.layout.row_item_shopping_list, data);
         this.dataSet = data;
         this.mContext=context;
@@ -32,7 +35,7 @@ public class CustomAdapter_ShoppingList extends ArrayAdapter<InvoiceData_Shoppin
 
         int position=(Integer) v.getTag();
         Object object= getItem(position);
-        InvoiceData_ShoppingList dataModel=(InvoiceData_ShoppingList)object;
+        ShoppingListItem dataModel=(ShoppingListItem)object;
 
         switch (v.getId())
         {
@@ -47,7 +50,7 @@ public class CustomAdapter_ShoppingList extends ArrayAdapter<InvoiceData_Shoppin
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        InvoiceData_ShoppingList dataModel = getItem(position);
+        ShoppingListItem dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -74,9 +77,9 @@ public class CustomAdapter_ShoppingList extends ArrayAdapter<InvoiceData_Shoppin
         //result.startAnimation(animation);
         //lastPosition = position;
 
-        viewHolder.txtItemName.setText(dataModel.getItemName());
-        viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getItemAmount()));
-        viewHolder.txtItemPrice.setText(String.valueOf(dataModel.getItemPrice()));
+        viewHolder.txtItemName.setText(dataModel.getName());
+        viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getAmount()));
+        viewHolder.txtItemPrice.setText(String.valueOf(dataModel.getPrice()));
         // Return the completed view to render on screen
         return convertView;
     }
