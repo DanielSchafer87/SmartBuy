@@ -1,4 +1,4 @@
-package com.zohar_daniel.smartbuy;
+package com.zohar_daniel.smartbuy.Adapters;
 
 
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.zohar_daniel.smartbuy.Models.ShoppingList;
+import com.zohar_daniel.smartbuy.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<ShoppingList> impl
         /*
         int position=(Integer) v.getTag();
         Object object= getItem(position);
-        InvoiceData_ShoppingLists dataModel=(InvoiceData_ShoppingLists)object;
+        ShoppingList dataModel=(ShoppingList)object;
 
         switch (v.getId())
         {

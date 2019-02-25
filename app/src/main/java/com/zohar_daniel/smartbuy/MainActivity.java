@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.zohar_daniel.smartbuy.Models.ShoppingList;
+import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,13 +26,25 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        /*
         DatabaseHelper h = new DatabaseHelper(getApplicationContext(),databaseName , null , 1);
         SQLiteDatabase db =  h.getWritableDatabase();
 
-        ShoppingList l = new ShoppingList(7,"שופרסל דיל נווה שאנן",5,"שפרסל","20/12/2018","חיפה");
-        h.addList(l);
-        h.allLists();
-      // h.DeleteTbl(ShoppingListsSchema.LISTS_TABLE);
+        ShoppingListItem item = new ShoppingListItem("חלב",4,4.3,1);
+        ShoppingListItem item1 = new ShoppingListItem("חלבה",41,4.31,1);
+        ShoppingListItem item2 = new ShoppingListItem("חלבון",42,4.32,1);
+
+        h.addItem(item);
+        h.addItem(item2);
+        h.addItem(item1);
+        */
+
+        //ShoppingList l = new ShoppingList(7,"שופרסל דיל נווה שאנן",5,"שפרסל","20/12/2018","חיפה");
+        //ShoppingList l2 = new ShoppingList(8,"שופרסל דיל שאנן",5,"רמי לוי","20/12/2018","חיפה");
+        //h.addList(l);
+        //h.addList(l2);
+        //h.allLists();
+        // h.DeleteTbl(ShoppingListsSchema.LISTS_TABLE);
     }
 
     @Override

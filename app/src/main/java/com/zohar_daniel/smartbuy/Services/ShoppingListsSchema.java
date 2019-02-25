@@ -1,8 +1,8 @@
-package com.zohar_daniel.smartbuy;
+package com.zohar_daniel.smartbuy.Services;
 
 public  class ShoppingListsSchema {
 
-    protected final static String databaseName = "shoppingLists.db";
+    public final static String databaseName = "shoppingLists.db";
 
 
     //Shopping lists

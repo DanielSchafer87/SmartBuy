@@ -3,24 +3,26 @@ package com.zohar_daniel.smartbuy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import com.zohar_daniel.smartbuy.Adapters.CustomAdapter_ShoppingLists;
+import com.zohar_daniel.smartbuy.Models.ShoppingList;
+import com.zohar_daniel.smartbuy.Services.Constants;
+import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
+import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
+
+import java.util.List;
 
 public class ShoppingListsActivity extends AppCompatActivity {
 
-    ArrayList<InvoiceData_ShoppingLists> dataModels;
+    List<ShoppingList> dataModels;
     ListView listView;
     private static CustomAdapter_ShoppingLists adapter;
+    int listID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,35 +33,16 @@ public class ShoppingListsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         listView=(ListView)findViewById(R.id.shopping_lists);
+        DatabaseHelper h = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
 
-        dataModels = new ArrayList<>();
-
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-        dataModels.add(new InvoiceData_ShoppingLists("שופרסל", "חיפה", "Afula", "12/12/12", 123.32, "7290027600007", "1", "12"));
-
-
+        dataModels = h.allLists();
         adapter= new CustomAdapter_ShoppingLists(dataModels,getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO send listID to the SQL database - dataModels.get(position).getListID();
+                listID = dataModels.get(position).getId();
                 moveToList(view);
             }
         });
@@ -80,6 +63,7 @@ public class ShoppingListsActivity extends AppCompatActivity {
     public void moveToList(View view) {
         Intent intent = null;
         intent = new Intent(this, ShoppingListActivity.class);
+        intent.putExtra(Constants.LIST_ID,listID);
         startActivity(intent);
     }
 

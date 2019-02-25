@@ -9,30 +9,34 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.zohar_daniel.smartbuy.Adapters.CustomAdapter_ShoppingList;
+import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
+import com.zohar_daniel.smartbuy.Services.Constants;
+import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
+import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
+
+import java.util.List;
 
 public class ShoppingListActivity extends AppCompatActivity {
 
-    ArrayList<InvoiceData_ShoppingList> dataModels;
+    List<ShoppingListItem> dataModels;
     ListView listView;
-    private static CustomAdapter_ShoppingList adapter;
+    private CustomAdapter_ShoppingList adapter;
+    int listID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        listID = getIntent().getIntExtra(Constants.LIST_ID, 0);
         setContentView(R.layout.activity_shopping_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         listView=(ListView)findViewById(R.id.shopping_list);
 
-        dataModels = new ArrayList<>();
+        DatabaseHelper h = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
+        dataModels = h.allListItems(listID);
 
-        dataModels.add(new InvoiceData_ShoppingList("וינסטון בוקס 10יח", 315,1));
-        dataModels.add(new InvoiceData_ShoppingList("קליק שוקולד חלב 75גרם", 6.40,2));
-        dataModels.add(new InvoiceData_ShoppingList("קרם קוקוס 1 ליטר", 19.90,1));
-
-        adapter= new CustomAdapter_ShoppingList(dataModels,getApplicationContext());
+        adapter = new CustomAdapter_ShoppingList(dataModels,getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

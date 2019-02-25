@@ -1,4 +1,4 @@
-package com.zohar_daniel.smartbuy;
+package com.zohar_daniel.smartbuy.Services;
 
 import android.content.ContentValues;
 import android.content.Context;

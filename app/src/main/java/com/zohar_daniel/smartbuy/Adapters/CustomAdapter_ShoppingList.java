@@ -1,4 +1,4 @@
-package com.zohar_daniel.smartbuy;
+package com.zohar_daniel.smartbuy.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
+import com.zohar_daniel.smartbuy.R;
 
 import java.util.ArrayList;
 import java.util.List;
