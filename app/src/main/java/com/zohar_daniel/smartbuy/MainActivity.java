@@ -13,6 +13,9 @@ import android.view.MenuItem;
 
 import com.zohar_daniel.smartbuy.Models.ShoppingList;
 import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
+import com.zohar_daniel.smartbuy.Services.GetXml;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         //h.addList(l2);
         //h.allLists();
         // h.DeleteTbl(ShoppingListsSchema.LISTS_TABLE);
+
+
     }
 
     @Override
