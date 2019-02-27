@@ -34,6 +34,7 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.zohar_daniel.smartbuy.Services.Constants;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,10 +52,12 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     ArrayList<String> barcodes = new ArrayList<>();
     Object syncLock = new Object();
     int threadsCompleteCounter = 0;
+    String storeAndChainCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        storeAndChainCode = getIntent().getStringExtra(Constants.CHAIN_AND_STORE_CODE);
         setContentView(R.layout.activity_photo_preview);
         Toolbar toolbar = findViewById(R.id.toolbar);
         imageView = findViewById(R.id.imageView);
@@ -187,7 +190,10 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                             imageView.setImageDrawable(null);
                         }
                     }).show();
+            pd.dismiss();
+            return;
         }
+
         pd.dismiss();
     }
 

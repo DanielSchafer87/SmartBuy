@@ -91,10 +91,4 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
     }
-
-    public void kuku()
-    {
-
-        String k = "Heyy i'm kuku";
-    }
 }
