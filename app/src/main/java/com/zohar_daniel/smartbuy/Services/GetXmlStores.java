@@ -133,7 +133,11 @@ public class GetXmlStores extends AsyncTask<String,Void, ArrayList<Store>> {
 
     private static String getValue(String tag, Element element) {
         NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
-        Node node = nodeList.item(0);
-        return node.getNodeValue();
+        if(nodeList.getLength() > 0) {
+            Node node = nodeList.item(0);
+            String value = node.getNodeValue();
+            return value;
+        }
+        return " ";
     }
 }
