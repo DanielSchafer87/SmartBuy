@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -34,13 +35,20 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.zohar_daniel.smartbuy.Models.ShoppingList;
+import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
 import com.zohar_daniel.smartbuy.Services.Constants;
+import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
+import com.zohar_daniel.smartbuy.Services.GetXmlItems;
+import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class PhotoPreviewActivity extends AppCompatActivity {
 
@@ -53,11 +61,13 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     Object syncLock = new Object();
     int threadsCompleteCounter = 0;
     String storeAndChainCode = "";
+    long newListID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         storeAndChainCode = getIntent().getStringExtra(Constants.CHAIN_AND_STORE_CODE);
+        newListID = getIntent().getLongExtra(Constants.LIST_ID,0);
         setContentView(R.layout.activity_photo_preview);
         Toolbar toolbar = findViewById(R.id.toolbar);
         imageView = findViewById(R.id.imageView);
@@ -175,11 +185,19 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     }
 
     private void DoneAnalyzingPhotos(){
+        GetXmlItems xmlItems = new GetXmlItems();
+        Intent intent = null;
+        ArrayList<String> storeChainCode = new ArrayList<>();
+        storeChainCode.add(storeAndChainCode);
+        long newID;
+
         for(String photo: photosPaths){
             File f = new File(photo);
             f.delete();
         }
+
         photosPaths.clear();
+
         if(barcodes.size() == 0){
             new AlertDialog.Builder(PhotoPreviewActivity.this)
                     .setTitle("לא נמצאו ברקודים")
@@ -193,7 +211,23 @@ public class PhotoPreviewActivity extends AppCompatActivity {
             pd.dismiss();
             return;
         }
-
+        else {
+            try {
+                ShoppingListItem[] items = xmlItems.execute(storeChainCode, barcodes).get();
+                DatabaseHelper h = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName, null, 1);
+                for (ShoppingListItem item : items) {
+                    item.setListId(newListID);
+                    h.addItem(item);
+                }
+                intent = new Intent(this, ShoppingListActivity.class);
+                intent.putExtra(Constants.LIST_ID, newListID);
+                startActivity(intent);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         pd.dismiss();
     }
 
@@ -242,8 +276,17 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 }
                 String text = line.getElements().get(maximum).getText();
                 Rect frame = line.getElements().get(maximum).getBoundingBox();
-                if(TextUtils.isDigitsOnly(text) && text.length() >= 3){
+                if(TextUtils.isDigitsOnly(text)){
                     synchronized(syncLock) {
+                        if(text.length() >= Constants.MIN_BARCODE_SIZE && text.length() < Constants.MAX_BARCODE_SIZE){
+                            int diff = Constants.MAX_BARCODE_SIZE - text.length();
+                            String barcodeBegin = "729";
+                            for(int i=0; i < (diff-barcodeBegin.length()); i++){
+                                text = "0"+text;
+                            }
+                            text = barcodeBegin+text;
+                        }
+
                         if (!barcodes.contains(text)) {
                             barcodes.add(text);
                         }

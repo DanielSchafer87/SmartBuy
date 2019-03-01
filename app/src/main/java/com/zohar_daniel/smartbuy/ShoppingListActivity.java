@@ -1,5 +1,6 @@
 package com.zohar_daniel.smartbuy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,12 +23,12 @@ public class ShoppingListActivity extends AppCompatActivity {
     List<ShoppingListItem> dataModels;
     ListView listView;
     private CustomAdapter_ShoppingList adapter;
-    int listID;
+    long listID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listID = getIntent().getIntExtra(Constants.LIST_ID, 0);
+        listID = getIntent().getLongExtra(Constants.LIST_ID, 0);
         setContentView(R.layout.activity_shopping_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,6 +60,12 @@ public class ShoppingListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ShoppingListsActivity.class);
+        startActivity(intent);
     }
 
 }

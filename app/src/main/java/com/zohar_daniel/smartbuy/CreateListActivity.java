@@ -12,11 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.zohar_daniel.smartbuy.Models.ShoppingList;
 import com.zohar_daniel.smartbuy.Models.Store;
 import com.zohar_daniel.smartbuy.Services.Constants;
+import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
 import com.zohar_daniel.smartbuy.Services.GetXmlStores;
+import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class CreateListActivity extends AppCompatActivity {
@@ -121,6 +126,10 @@ public class CreateListActivity extends AppCompatActivity {
     public void moveToScreen(View view)
     {
         Intent intent = null;
+        long newID = 0;
+        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName, null, 1);
+        Date date = new Date();
+        String todayDate= new SimpleDateFormat("dd-MM-yyyy").format(date);
 
         if(dropdown_store.getSelectedItem() == null){
             new AlertDialog.Builder(CreateListActivity.this)
@@ -135,6 +144,15 @@ public class CreateListActivity extends AppCompatActivity {
             return;
         }
 
+        ShoppingList newList = new ShoppingList(
+                storeId[dropdown_store.getSelectedItemPosition()],
+                dropdown_store.getSelectedItem().toString(),
+                chainId[dropdown_chain.getSelectedItemPosition()],
+                dropdown_chain.getSelectedItem().toString(),
+                todayDate,
+                "KUKU");
+        newID = dbHelper.addList(newList);
+
         switch(view.getId()) {
             case R.id.btnCamera:
                 String chainAndStoreCode =  chainId[dropdown_chain.getSelectedItemPosition()]
@@ -142,6 +160,7 @@ public class CreateListActivity extends AppCompatActivity {
                                             storeId[dropdown_store.getSelectedItemPosition()];
                 intent = new Intent(this, PhotoPreviewActivity.class);
                 intent.putExtra(Constants.CHAIN_AND_STORE_CODE,chainAndStoreCode);
+                intent.putExtra(Constants.LIST_ID,newID);
                 break;
             case R.id.btnManual:
                 //intent = new Intent(this, StatisticsActivity.class);

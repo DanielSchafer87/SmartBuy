@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -22,7 +25,7 @@ public class ShoppingListsActivity extends AppCompatActivity {
     List<ShoppingList> dataModels;
     ListView listView;
     private static CustomAdapter_ShoppingLists adapter;
-    int listID;
+    long listID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +54,6 @@ public class ShoppingListsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                */
                 moveToCreateList(view);
             }
         });
@@ -71,6 +70,12 @@ public class ShoppingListsActivity extends AppCompatActivity {
     {
         Intent intent = null;
         intent = new Intent(this, CreateListActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 

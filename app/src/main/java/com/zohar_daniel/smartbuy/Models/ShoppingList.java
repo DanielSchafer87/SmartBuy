@@ -5,12 +5,12 @@ public class ShoppingList {
     private  int Id;
     private int StoreId;
     private String StoreName;
-    private int ChainId;
+    private String ChainId;
     private String ChainName;
     private String CreatedOn;
     private String City;
 
-    public ShoppingList(int id, int storeId, String storeName, int chainId, String chainName, String createdOn, String city) {
+    public ShoppingList(int id, int storeId, String storeName, String chainId, String chainName, String createdOn, String city) {
         Id = id;
         StoreId = storeId;
         StoreName = storeName;
@@ -20,7 +20,7 @@ public class ShoppingList {
         City = city;
     }
 
-    public ShoppingList(int storeId, String storeName, int chainId, String chainName, String createdOn, String city) {
+    public ShoppingList(int storeId, String storeName, String chainId, String chainName, String createdOn, String city) {
         StoreId = storeId;
         StoreName = storeName;
         ChainId = chainId;
@@ -57,11 +57,11 @@ public class ShoppingList {
         StoreName = storeName;
     }
 
-    public int getChainId() {
+    public String getChainId() {
         return ChainId;
     }
 
-    public void setChainId(int chainId) {
+    public void setChainId(String chainId) {
         ChainId = chainId;
     }
 

@@ -92,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      }
 
      //Get all items by list id
-    public List<ShoppingListItem> allListItems(int id) {
+    public List<ShoppingListItem> allListItems(long id) {
 
         List<ShoppingListItem> shoppingItems = new LinkedList<ShoppingListItem>();
         String query = "SELECT  * FROM " + ShoppingListsSchema.ITEMS_TABLE+" where listId="+id;
@@ -161,7 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 list.setId(Integer.parseInt(cursor.getString(0)));
                 list.setStoreId(Integer.parseInt(cursor.getString(1)));
                 list.setStoreName(cursor.getString(2));
-                list.setChainId(Integer.parseInt(cursor.getString(3)));
+                list.setChainId(cursor.getString(3));
                 list.setChainName(cursor.getString(4));
                 list.setCreatedOn(cursor.getString(5));
                 list.setCity(cursor.getString(6));
@@ -175,7 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Create new shoppingList
-    public void addList(ShoppingList shoppingList) {
+    public long addList(ShoppingList shoppingList) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -194,8 +194,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //store city
         values.put(ShoppingListsSchema.COLUMN_LISTS_CITY, shoppingList.getCity());
         // run insert
-        db.insert(ShoppingListsSchema.LISTS_TABLE,null, values);
+        long newID = db.insert(ShoppingListsSchema.LISTS_TABLE,null, values);
         db.close();
+
+        return newID;
     }
 
  }

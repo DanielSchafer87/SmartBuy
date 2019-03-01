@@ -6,16 +6,15 @@ public class ShoppingListItem {
     private String Name;
     private int Amount;
     private double Price;
-    private int ListId;
+    private long ListId;
 
     public ShoppingListItem(String name, int amount, double price, int listId) {
-
         Name = name;
         Amount = amount;
         Price = price;
         ListId = listId;
     }
-    public ShoppingListItem(int id, String name, int amount, double price, int listId) {
+    public ShoppingListItem(int id, String name, int amount, double price, long listId) {
 
         Id = id;
         Name = name;
@@ -23,7 +22,6 @@ public class ShoppingListItem {
         Price = price;
         ListId = listId;
     }
-
     public ShoppingListItem()
     {
 
@@ -53,11 +51,11 @@ public class ShoppingListItem {
         Price = price;
     }
 
-    public int getListId() {
+    public long getListId() {
         return ListId;
     }
 
-    public void setListId(int listId) {
+    public void setListId(long listId) {
         ListId = listId;
     }
 
