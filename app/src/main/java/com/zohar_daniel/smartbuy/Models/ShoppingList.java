@@ -9,6 +9,9 @@ public class ShoppingList {
     private String ChainName;
     private String CreatedOn;
     private String City;
+    private Double TotalSum;
+
+
 
     public ShoppingList(int id, int storeId, String storeName, String chainId, String chainName, String createdOn, String city) {
         Id = id;
@@ -88,6 +91,10 @@ public class ShoppingList {
     public void setCity(String city) {
         City = city;
     }
+
+    public Double getTotalSum() { return TotalSum; }
+
+    public void setTotalSum(Double totalSum) { TotalSum = totalSum; }
 
 
 
