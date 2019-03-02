@@ -33,15 +33,17 @@ public  class ShoppingListsSchema {
     public final static String COLUMN_ITEMS_AMOUNT = "Amount";
     public final static String COLUMN_ITEMS_TOTAL_PRICE = "TotalPrice";
     public final static String COLUMN_ITEMS_LISTID = "ListId";
-
+    public final static String COLUMN_ITEMS_IS_WEIGHTED= "IsWeighted";
 
 
     protected final static String CREATE_TABLE_ITEMS = "CREATE TABLE " + ITEMS_TABLE + "( "
             + COLUMN_ITEMS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_ITEMS_NAME + " TEXT, "
-            + COLUMN_ITEMS_AMOUNT + " INTEGER ,"
+            + COLUMN_ITEMS_AMOUNT + " DOUBLE,"
             + COLUMN_ITEMS_PRICE + " DOUBLE NOT NULL, "
             + COLUMN_ITEMS_LISTID + " INTEGER NOT NULL,"
+            + COLUMN_ITEMS_TOTAL_PRICE + " DOUBLE,"
+            + COLUMN_ITEMS_IS_WEIGHTED + " TEXT,"
             + " FOREIGN KEY ("+COLUMN_ITEMS_LISTID+") REFERENCES "+ LISTS_TABLE +" )";
     }
 

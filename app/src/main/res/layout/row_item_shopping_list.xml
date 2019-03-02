@@ -23,12 +23,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="₪102.34"
+        android:layout_marginLeft="15dp"
+        android:text="102.34"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/itemPriceUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="₪"
         android:textColor="@android:color/black" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/itemPrice"
         android:layout_centerInParent="true">
 
         <TextView
@@ -36,7 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="5"
+            android:layout_marginLeft="45dp"
+            android:text="5 ק ג"
             android:textColor="@android:color/black"/>
     </LinearLayout>
 

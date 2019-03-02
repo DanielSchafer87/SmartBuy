@@ -48,8 +48,8 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
 
             URL url = new URL(path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setReadTimeout(1000000000 );
-            connection.setConnectTimeout(1500000000);
+            //connection.setReadTimeout(0);
+            //connection.setConnectTimeout(0);
             connection.setRequestMethod("GET");
             connection.setDoInput(true);
             connection.connect();
@@ -61,10 +61,12 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
             myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             myParser.setInput(stream, null);
 
+
             Boolean isItemCode = false;
             Boolean isItemName = false;
             Boolean isItemPrice = false;
             Boolean isBarcodeExist = false;
+            Boolean isWeighted = false;
             int event = myParser.getEventType();
             ShoppingListItem item = null;
 
@@ -81,23 +83,14 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
                         else if(name.equals("ItemPrice")){
                             isItemPrice = true;
                         }
+                        else if(name.equals("bIsWeighted")){
+                            isWeighted = true;
+                        }
                         break;
                     case XmlPullParser.TEXT:
                         String text = myParser.getText().trim();
 
                         if(!text.equals("")){
-                            /*
-                            if(isItemCode) {
-                                for (String barcode : barcodes) {
-                                    if (text.contains(barcode)) {
-                                        isBarcodeExist = true;
-                                        item = new ShoppingListItem();
-                                        item.setAmount(1);
-                                        break;
-                                    }
-                                }
-                            }
-                            */
                             if(isItemCode && barcodes.contains(text)) {
                                 barcodes.remove(text);
                                 isBarcodeExist = true;
@@ -107,6 +100,9 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
                             }
                             else if(isBarcodeExist && isItemName){
                                 item.setName(text);
+                            }
+                            else if(isBarcodeExist && isWeighted){
+                                item.setIsWeighted(text);
                             }
                             else if(isBarcodeExist && isItemPrice){
                                 isBarcodeExist = false;
@@ -127,6 +123,9 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
                         }
                         else if(name.equals("ItemPrice")){
                             isItemPrice = false;
+                        }
+                        else if(name.equals("bIsWeighted")){
+                            isWeighted = false;
                         }
                         break;
                 }

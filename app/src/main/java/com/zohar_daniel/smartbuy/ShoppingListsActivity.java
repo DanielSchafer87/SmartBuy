@@ -1,5 +1,7 @@
 package com.zohar_daniel.smartbuy;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -24,8 +26,8 @@ public class ShoppingListsActivity extends AppCompatActivity {
 
     List<ShoppingList> dataModels;
     ListView listView;
-    private static CustomAdapter_ShoppingLists adapter;
     long listID;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +38,10 @@ public class ShoppingListsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         listView=(ListView)findViewById(R.id.shopping_lists);
-        DatabaseHelper h = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
+        final DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
 
-        dataModels = h.allLists();
-        adapter= new CustomAdapter_ShoppingLists(dataModels,getApplicationContext());
+        dataModels = dbHelper.allLists();
+        CustomAdapter_ShoppingLists adapter = new CustomAdapter_ShoppingLists(dataModels,getApplicationContext());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -47,6 +49,29 @@ public class ShoppingListsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listID = dataModels.get(position).getId();
                 moveToList(view);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                new AlertDialog.Builder(ShoppingListsActivity.this)
+                        .setTitle("מחיקת רשימה")
+                        .setMessage("האם ברצונך למחוק את הרשימה?")
+                        .setPositiveButton("מחק", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO implement delete list.
+                            }
+                        })
+                        .setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //do nothing.
+                            }
+                        }).show();
+                return true;
             }
         });
 

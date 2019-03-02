@@ -85,7 +85,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          values.put(ShoppingListsSchema.COLUMN_ITEMS_LISTID, shoppingItem.getListId());
          //price
          values.put(ShoppingListsSchema.COLUMN_ITEMS_PRICE, shoppingItem.getPrice());
-
+         //
+         values.put(ShoppingListsSchema.COLUMN_ITEMS_IS_WEIGHTED, shoppingItem.getIsWeighted());
+         //
+         values.put(ShoppingListsSchema.COLUMN_ITEMS_TOTAL_PRICE, shoppingItem.getAmount()*shoppingItem.getPrice());
          // run insert
          db.insert(ShoppingListsSchema.ITEMS_TABLE,null, values);
          db.close();
@@ -105,10 +108,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 shoppingItem = new ShoppingListItem();
                 shoppingItem.setId(Integer.parseInt(cursor.getString(0)));
                 shoppingItem.setName(cursor.getString(1));
-                shoppingItem.setAmount(Integer.parseInt(cursor.getString(2)));
+                shoppingItem.setAmount(Double.valueOf(cursor.getString(2)));
                 shoppingItem.setPrice(Double.parseDouble(cursor.getString(3)));
                 shoppingItem.setListId(Integer.parseInt(cursor.getString(4)));
-
+                //shoppingItem.setTotalPrice(Boolean.getBoolean(cursor.getString(5)));
+                shoppingItem.setIsWeighted(cursor.getString(6));
                 shoppingItems.add(shoppingItem);
             } while (cursor.moveToNext());
         }

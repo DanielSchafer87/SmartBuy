@@ -4,28 +4,34 @@ public class ShoppingListItem {
 
     private  int Id;
     private String Name;
-    private int Amount;
+    private double Amount;
     private double Price;
     private long ListId;
+    private String IsWeighted;
 
-    public ShoppingListItem(String name, int amount, double price, int listId) {
+    public ShoppingListItem(String name, int amount, double price, int listId, String isWeighted) {
         Name = name;
         Amount = amount;
         Price = price;
         ListId = listId;
+        IsWeighted = isWeighted;
     }
-    public ShoppingListItem(int id, String name, int amount, double price, long listId) {
-
+    public ShoppingListItem(int id, String name, int amount, double price, long listId, String isWeighted) {
         Id = id;
         Name = name;
         Amount = amount;
         Price = price;
         ListId = listId;
+        IsWeighted = isWeighted;
     }
     public ShoppingListItem()
     {
 
     }
+
+    public void setIsWeighted(String isWeighted){ IsWeighted = isWeighted; }
+
+    public String getIsWeighted(){ return IsWeighted; }
 
     public String getName() {
         return Name;
@@ -35,11 +41,11 @@ public class ShoppingListItem {
         Name = name;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return Amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         Amount = amount;
     }
 

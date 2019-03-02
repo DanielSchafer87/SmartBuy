@@ -79,7 +79,10 @@ public class CustomAdapter_ShoppingList extends ArrayAdapter<ShoppingListItem> i
         //lastPosition = position;
 
         viewHolder.txtItemName.setText(dataModel.getName());
-        viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getAmount()));
+        if(dataModel.getIsWeighted().equals("1"))
+            viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getAmount()) + "ק\"ג ");
+        else
+            viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getAmount()) + "יח' ");
         viewHolder.txtItemPrice.setText(String.valueOf(dataModel.getPrice()));
         // Return the completed view to render on screen
         return convertView;
