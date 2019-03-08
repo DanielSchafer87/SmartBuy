@@ -158,23 +158,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "SELECT sum(tblTemp.TotalSum) TotalExpenses FROM (SELECT L.Id,sum(I.TotalPrice) AS TotalSum"
                         + "  FROM " + ShoppingListsSchema.LISTS_TABLE + " L"
                         + " INNER JOIN " + ShoppingListsSchema.ITEMS_TABLE + " I ON I.Listid = L.Id"
-                        + " WHERE L.Date >= '" + fromDate + "' AND L.Date<= '" + toDate+"'"
+                        + " WHERE L.Date >= '" + fromDate + "' AND L.Date <= '" + toDate+"'"
                         + "  GROUP BY L.Id) tblTemp";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        String TotalExpenses = "";
+        String TotalExpenses = " ";
 
         if (cursor.moveToFirst()) {
 
             TotalExpenses = cursor.getString(0);
         }
         db.close();
+
+        if(TotalExpenses == null)
+            return " ";
+
         return TotalExpenses;
 
     }
 
-    public String GeeMostPreferredBranch(String fromDate, String toDate)
+    public String GetPopularStore(String fromDate, String toDate)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
@@ -183,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query =
                 " SELECT  StoreName , count(StoreName) Cnt" +
                         " FROM "+ShoppingListsSchema.LISTS_TABLE+
-                        " WHERE Date >= '"+ fromDate+"' AND Date<= '"+toDate +"'" +
+                        " WHERE Date >= '"+ fromDate+"' AND Date <= '"+toDate +"'" +
                         " GROUP BY StoreName" +
                         " ORDER BY Cnt Desc" +
                         " LIMIT 1";
@@ -197,6 +201,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+
+
 
         return preferredBranch;
 
@@ -215,7 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " SELECT  I.Name , sum(I.Amount) Amount" +
                         " FROM "+ShoppingListsSchema.ITEMS_TABLE+" I" +
                         " INNER JOIN "+ShoppingListsSchema.LISTS_TABLE+ " L ON L.Id = I.Listid" +
-                        " WHERE I.IsWeighted = '0' AND L.Date >= '"+ fromDate+"' AND L.Date<= '"+toDate +"'" +
+                        " WHERE I.IsWeighted = '0' AND L.Date >= '"+ fromDate+"' AND L.Date <= '"+toDate +"'" +
                         " GROUP BY Name" +
                         " ORDER BY Amount Desc" +
                         " LIMIT 1";
@@ -232,7 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " SELECT  I.Name, Count(I.Name) Amount" +
                         "  FROM "+ShoppingListsSchema.ITEMS_TABLE+" I" +
                         "  INNER JOIN "+ShoppingListsSchema.LISTS_TABLE+" L ON L.Id = I.Listid" +
-                        " WHERE I.IsWeighted = '1' AND L.Date >= '"+ fromDate+"' AND L.Date<= '"+toDate +"'" +
+                        " WHERE I.IsWeighted = '1' AND L.Date >= '"+ fromDate+"' AND L.Date <= '"+toDate +"'" +
                         "  GROUP BY Name" +
                         "  ORDER BY Amount Desc" +
                         "  LIMIT 1";
@@ -252,12 +258,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         {
             return itemNameNotWeighted;
         }
-        else if(AmountNotWeighted == AmountWeighted)
+        else if(AmountNotWeighted > AmountWeighted)
+        {
+
+            return  itemNameWeighted;
+        }
+        else if(AmountNotWeighted == AmountWeighted && AmountNotWeighted !=0 && AmountWeighted !=0 )
         {
             return itemNameNotWeighted  +","+ itemNameWeighted;
         }
         else
-            return  itemNameWeighted;
+            return "";
+
 
     }
 

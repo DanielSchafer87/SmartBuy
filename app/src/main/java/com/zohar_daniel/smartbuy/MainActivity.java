@@ -26,12 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         DatabaseHelper h = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName, null , 1);
+
+
         SQLiteDatabase db =  h.getWritableDatabase();
 
-/*
-        ShoppingList l = new ShoppingList(7,"שופרסל דיל נווה שאנן","5","שפרסל","2018-04-23","חיפה");
-        ShoppingList l2 = new ShoppingList(8,"רמי לוי חיפה","5","רמי לוי","2018-07-23","חיפה");
-        ShoppingList l3 = new ShoppingList(8,"רמי לוי עכו","5","רמי לוי","2018-11-23","עכו");
+
+        ShoppingList l = new ShoppingList(7,"שופרסל דיל נווה שאנן","5","שפרסל","2018-07-23","חיפה");
+        ShoppingList l2 = new ShoppingList(8,"רמי לוי חיפה","5","רמי לוי","2018-09-25","חיפה");
+        ShoppingList l3 = new ShoppingList(8,"רמי לוי עכו","5","רמי לוי","2019-03-05","עכו");
 
         h.addList(l);
         h.addList(l2);
@@ -52,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
         h.addItem(item4);
         h.addItem(item5);
 
-*/
-      // h.allItems();
-       // h.GetMostPurchasedProduct("2018-04-23","2018-10-01");
+
+
+       // h.allItems();
+       //h.allLists();
+       // h.GetMostPurchasedProduct("23/07/2018","25/09/2018");
     //h.GetTotalExpenses("2018-04-23","2018-10-01");
       //  h.GetMostPurchasedProduct("2018-04-23","2018-10-01");
-        h.GeeMostPreferredBranch("2018-04-23","2018-10-01");
+       // h.GetMostPreferredBranch("2018-04-23","2018-10-01");
 
 
 
