@@ -8,6 +8,7 @@ public class ShoppingListItem {
     private double Price;
     private long ListId;
     private String IsWeighted;
+    private String TotalPrice;
 
     public ShoppingListItem(String name, int amount, double price, int listId, String isWeighted) {
         Name = name;
@@ -71,5 +72,13 @@ public class ShoppingListItem {
 
     public void setId(int id) {
         Id = id;
+    }
+
+    public String getTotalPrice() {
+        return TotalPrice;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        TotalPrice = totalPrice;
     }
 }

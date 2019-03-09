@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,14 +8,200 @@
     tools:context=".StatisticsActivity"
     tools:showIn="@layout/activity_statistics">
 
-    <TextView
-        android:id="@+id/tvStatistics"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:id="@+id/kk"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="50dp">
+
+        <ImageButton android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calendar_icon"
+            android:id="@+id/btnDatefrom"
+            android:onClick="SetDate" />
+
+        <EditText
+            android:id="@+id/inputDateFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:focusable="false"
+            android:clickable="true"
+            android:text="23/04/2018"
+            android:layout_marginLeft="30px"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="מתאריך: "
+            android:layoutDirection="rtl"
+            android:layout_marginLeft="40px"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/kk"
+        android:id="@+id/k1"
+        android:layout_marginRight="25dp"
+
+        >
+
+        <ImageButton android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calendar_icon"
+            android:id="@+id/btnDateTo"
+            android:onClick="SetDate"
+            />
+
+        <EditText
+            android:id="@+id/inputDateTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:focusable="false"
+            android:clickable="true"
+            android:text="25/04/2018"
+            android:layout_marginLeft="30px"/>
+
+        <TextView
+            android:id="@+id/tvStatistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="עד תאריך:"
+            android:layoutDirection="rtl"
+            android:layout_marginLeft="23px"/>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="סטטיסטיקות קניה"
-        android:layout_weight="1"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/k1"
+        android:id="@+id/layoutbtn"
         >
-    </TextView>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="הצג דוח"
+            android:layout_centerInParent="true"
+            android:id="@+id/btnReport"
+            android:onClick="GetReport"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_below="@+id/layoutbtn"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="right"
+
+            >
 
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/totalExpenses"
+            android:layoutDirection="rtl"
+            android:layout_gravity="right"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1560 שח"
+            android:layoutDirection="rtl"
+            android:layout_gravity="right"
+            android:id="@+id/tvTotalExpenses"
+            />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mostPurchasedProduct"
+                android:layoutDirection="rtl"
+                android:layout_gravity="right"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1560 שח"
+                android:layoutDirection="rtl"
+                android:layout_gravity="right"
+                android:id="@+id/tvMostPurchasedProduct"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/popularStore"
+                android:layoutDirection="rtl"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1560 שח"
+                android:layoutDirection="rtl"
+                android:layout_alignParentRight="true"
+                android:id="@+id/tvPopularStore"
+                android:layout_gravity="right"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+
+
+</RelativeLayout>

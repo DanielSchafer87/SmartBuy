@@ -87,7 +87,7 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<ShoppingList> impl
         viewHolder.txtChainName.setText(dataModel.getChainName());
         viewHolder.date.setText(dataModel.getCreatedOn());
         //TODO calculate amount in SQL and create method to get the amount.
-        viewHolder.amount.setText(String.valueOf(123.32));
+        viewHolder.amount.setText(String.valueOf(dataModel.getTotalSum()));
         // Return the completed view to render on screen
         return convertView;
     }
