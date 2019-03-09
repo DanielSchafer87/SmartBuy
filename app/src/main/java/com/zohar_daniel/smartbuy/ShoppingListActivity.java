@@ -7,15 +7,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
-
 import com.zohar_daniel.smartbuy.Adapters.CustomAdapter_ShoppingList;
-import com.zohar_daniel.smartbuy.Models.ShoppingList;
 import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
 import com.zohar_daniel.smartbuy.Services.Constants;
 import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
@@ -39,8 +37,20 @@ public class ShoppingListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listID = getIntent().getLongExtra(Constants.LIST_ID, 0);
         setContentView(R.layout.activity_shopping_list);
+
+        //click on logo redirect to mainActivity
+        ImageView logo = (ImageView)findViewById(R.id.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        listID = getIntent().getLongExtra(Constants.LIST_ID, 0);
         listView=(ListView)findViewById(R.id.shopping_list);
 
         alertBuilder = new AlertDialog.Builder(ShoppingListActivity.this);
@@ -65,6 +75,8 @@ public class ShoppingListActivity extends AppCompatActivity {
                         ShoppingListItem item = dataModels.get(itemClickedPosition);
                         item.setAmount(value);
                         dbHelper.updateItem(item);
+                        adapter.clear();
+                        adapter.addAll(dbHelper.allListItems(listID));
                         adapter.notifyDataSetChanged();
                         listView.invalidateViews();
                     }
@@ -85,11 +97,15 @@ public class ShoppingListActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.accept_amount_change,new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         ShoppingListItem item = dataModels.get(itemClickedPosition);
                         item.setAmount(number_picker_not_weighted.getValue());
                         dbHelper.updateItem(item);
+                        adapter.clear();
+                        adapter.addAll(dbHelper.allListItems(listID));
                         adapter.notifyDataSetChanged();
                         listView.invalidateViews();
+
                     }
                 }).setNegativeButton(R.string.reject_amount_change, new DialogInterface.OnClickListener() {
             @Override

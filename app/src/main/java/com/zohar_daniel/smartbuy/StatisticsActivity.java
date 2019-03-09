@@ -1,27 +1,20 @@
 package com.zohar_daniel.smartbuy;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
 import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.text.SimpleDateFormat;
-
 import java.text.ParseException;
 
 
@@ -43,9 +36,18 @@ public class StatisticsActivity extends  AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_statistics);
 
+        //click on logo redirect to mainActivity
+        ImageView logo = (ImageView)findViewById(R.id.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
         /*Date Area*/
         editText_dateFrom = (EditText) findViewById(R.id.inputDateFrom);
         editText_dateTo = (EditText) findViewById(R.id.inputDateTo);

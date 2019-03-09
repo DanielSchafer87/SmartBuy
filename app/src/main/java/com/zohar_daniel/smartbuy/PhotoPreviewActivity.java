@@ -2,7 +2,6 @@ package com.zohar_daniel.smartbuy;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -63,9 +62,22 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_photo_preview);
+
+        //click on logo redirect to mainActivity
+        ImageView logo = (ImageView)findViewById(R.id.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         storeAndChainCode = getIntent().getStringExtra(Constants.CHAIN_AND_STORE_CODE);
         newListID = getIntent().getLongExtra(Constants.LIST_ID,0);
-        setContentView(R.layout.activity_photo_preview);
         imageView = findViewById(R.id.imageView);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {

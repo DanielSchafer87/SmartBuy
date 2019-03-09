@@ -83,7 +83,7 @@ public class CustomAdapter_ShoppingList extends ArrayAdapter<ShoppingListItem> i
             viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getAmount()) + " ק\"ג");
         else
             viewHolder.txtItemAmount.setText(String.valueOf(dataModel.getAmount()) + " יח'");
-        viewHolder.txtItemPrice.setText(String.valueOf(dataModel.getPrice()));
+        viewHolder.txtItemPrice.setText(String.valueOf(dataModel.getTotalPrice()));
         // Return the completed view to render on screen
         return convertView;
     }

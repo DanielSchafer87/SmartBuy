@@ -1,20 +1,29 @@
 package com.zohar_daniel.smartbuy;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.zohar_daniel.smartbuy.Models.ShoppingList;
 import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
 import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
 import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
+
+
+    TextView tvMostPurchasedProduct;
+    TextView tvPopularStore;
+    TextView tvTotalExpenses;
+    TextView tvCurrentMonth;
+    String[] hebMonthList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +31,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-      /*
-
-
         DatabaseHelper h = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName, null , 1);
 
+         tvMostPurchasedProduct = (TextView) findViewById(R.id.tvMostPurchasedProduct);
+         tvPopularStore =(TextView)findViewById(R.id.tvPopularStore);
+         tvTotalExpenses =(TextView)findViewById(R.id.tvTotalExpenses);
+         tvCurrentMonth = (TextView)findViewById(R.id.tvMonth);
 
-        SQLiteDatabase db =  h.getWritableDatabase();
+         hebMonthList = new String[]{"ינואר","מפרואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"};
 
-
+/*
         ShoppingList l = new ShoppingList(7,"שופרסל דיל נווה שאנן","5","שפרסל","2018-07-23","חיפה");
         ShoppingList l2 = new ShoppingList(8,"רמי לוי חיפה","5","רמי לוי","2018-09-25","חיפה");
         ShoppingList l3 = new ShoppingList(8,"רמי לוי עכו","5","רמי לוי","2019-03-05","עכו");
@@ -54,18 +64,46 @@ public class MainActivity extends AppCompatActivity {
         h.addItem(item4);
         h.addItem(item5);
 
+
 */
 
        // h.allItems();
-       //h.allLists();
+      // h.allLists();
        // h.GetMostPurchasedProduct("23/07/2018","25/09/2018");
     //h.GetTotalExpenses("2018-04-23","2018-10-01");
       //  h.GetMostPurchasedProduct("2018-04-23","2018-10-01");
        // h.GetMostPreferredBranch("2018-04-23","2018-10-01");
 
 
+        SetStartData();
 
 
+    }
+
+    public void SetStartData()
+    {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String Currentfrom =  formatter.format(c.getTime());
+
+
+        Calendar c2 = Calendar.getInstance();
+        String CurrentTo =  formatter.format(c2.getTime());
+        //Place the current month in the title
+        tvCurrentMonth.setText(hebMonthList[c2.get(Calendar.MONTH)]);
+
+        //Set results to textView
+        String f = "";
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName, null , 1);
+
+        f = db.GetTotalExpenses(Currentfrom ,CurrentTo );
+        tvTotalExpenses.setText("₪"+f);
+        f = db.GetMostPurchasedProduct(Currentfrom ,CurrentTo );
+        tvMostPurchasedProduct.setText(f);
+        f = db.GetPopularStore(Currentfrom ,CurrentTo );
+        tvPopularStore.setText(f);
 
     }
 

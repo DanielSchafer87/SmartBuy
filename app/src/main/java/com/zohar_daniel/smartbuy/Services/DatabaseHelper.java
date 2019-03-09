@@ -52,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(ShoppingListsSchema.COLUMN_ITEMS_AMOUNT, shoppingItem.getAmount());
+        values.put(ShoppingListsSchema.COLUMN_ITEMS_TOTAL_PRICE, shoppingItem.getAmount() * shoppingItem.getPrice());
 
         int i = db.update(ShoppingListsSchema.ITEMS_TABLE, // table
                 values, // column/value
@@ -150,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          return shoppingItems;
      }
 
-    //**LIST SECTION**//
+    //**Statistics Data**//
 
     //Get user's total expenses between dates
     public String GetTotalExpenses(String fromDate, String toDate) {
@@ -273,6 +274,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    //**LIST SECTION**//
+
+    //Delete list
+    public void deleteList(ShoppingList list)
+    {
+        //Get all items for current list
+        List<ShoppingListItem> currentItems = allListItems(list.getId());
+
+        //Delete all items records from the list
+        for (ShoppingListItem item : currentItems) {
+           deleteItem(item);
+        }
+
+        //Delete list record
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(ShoppingListsSchema.LISTS_TABLE, "id = ?", new String[] { String.valueOf(list.getId()) });
+        db.close();
+        
+    }
+    
 
     //Get all Lists
     public List<ShoppingList> allLists() {

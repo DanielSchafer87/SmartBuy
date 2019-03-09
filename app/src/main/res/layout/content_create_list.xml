@@ -33,7 +33,7 @@
         android:layout_below="@+id/spinner_chain"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="בחר רשת"
+        android:text="בחר סניף"
         android:textColor="@android:color/black" />
 
     <Spinner

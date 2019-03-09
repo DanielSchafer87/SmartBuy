@@ -5,11 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.zohar_daniel.smartbuy.Models.ShoppingList;
@@ -36,6 +35,21 @@ public class CreateListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_list);
+
+
+        //click on logo redirect to mainActivity
+        ImageView logo = (ImageView)findViewById(R.id.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         //get the chain spinner from the xml.
         dropdown_chain = findViewById(R.id.spinner_chain);
@@ -127,7 +141,7 @@ public class CreateListActivity extends AppCompatActivity {
         long newID = 0;
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName, null, 1);
         Date date = new Date();
-        String todayDate= new SimpleDateFormat("dd-MM-yyyy").format(date);
+        String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
 
         if(dropdown_store.getSelectedItem() == null){
             new AlertDialog.Builder(CreateListActivity.this)

@@ -58,6 +58,7 @@
             android:src="@drawable/calendar_icon"
             android:id="@+id/btnDateTo"
             android:onClick="SetDate"
+
             />
 
         <EditText
@@ -96,6 +97,7 @@
             android:layout_centerInParent="true"
             android:id="@+id/btnReport"
             android:onClick="GetReport"
+            android:background="@drawable/capsule_button_selector"
             />
 
     </RelativeLayout>

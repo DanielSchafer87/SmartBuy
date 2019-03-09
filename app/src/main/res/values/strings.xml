@@ -14,9 +14,9 @@
 
 
 
-    <string name="totalExpenses"><u>סה"כ הוצאות</u></string>
-    <string name="mostPurchasedProduct"><u>המוצר הנקנה ביותר</u></string>
-    <string name="popularStore"><u>הסניף המועדף ביותר</u></string>
+    <string name="totalExpenses"><b>סה"כ הוצאות</b></string>
+    <string name="mostPurchasedProduct"><b>המוצר הנקנה ביותר</b></string>
+    <string name="popularStore"><b>הסניף המועדף ביותר</b></string>
 
 
 
