@@ -36,8 +36,6 @@ public class CreateListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //get the chain spinner from the xml.
         dropdown_chain = findViewById(R.id.spinner_chain);

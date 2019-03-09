@@ -15,4 +15,7 @@ public class Constants {
 
     public final static int MAX_BARCODE_SIZE = 13;
     public final static int MIN_BARCODE_SIZE = 3;
+
+    public final static int DISPLAY_CREATELIST_PROGRESS_BAR = 1;
+    public final static int HIDE_CREATELIST_PROGRESS_BAR = 0;
 }

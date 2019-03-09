@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,14 +16,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,25 +33,23 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.zohar_daniel.smartbuy.Models.ShoppingList;
 import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
 import com.zohar_daniel.smartbuy.Services.Constants;
 import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
 import com.zohar_daniel.smartbuy.Services.GetXmlItems;
 import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
+import com.zohar_daniel.smartbuy.Threads.UIHandler;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class PhotoPreviewActivity extends AppCompatActivity {
 
     static final int REQUEST_TAKE_PHOTO = 100;
-    ProgressDialog pd;
     String mCurrentPhotoPath;
     ImageView imageView;
     ArrayList<String> photosPaths = new ArrayList<>();
@@ -62,6 +58,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     int threadsCompleteCounter = 0;
     String storeAndChainCode = "";
     long newListID;
+    UIHandler uiHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +66,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         storeAndChainCode = getIntent().getStringExtra(Constants.CHAIN_AND_STORE_CODE);
         newListID = getIntent().getLongExtra(Constants.LIST_ID,0);
         setContentView(R.layout.activity_photo_preview);
-        Toolbar toolbar = findViewById(R.id.toolbar);
         imageView = findViewById(R.id.imageView);
-        pd = new ProgressDialog(PhotoPreviewActivity.this);
-        setSupportActionBar(toolbar);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,  Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
@@ -101,10 +95,10 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 break;
             case R.id.btnDone:
                 threadsCompleteCounter = 0;
-                pd.setTitle("אנא המתן");
-                pd.setMessage("יוצר רשימת קניות");
-                pd.setCancelable(false);
-                pd.show();
+                HandlerThread uiThread = new HandlerThread("UIHandler");
+                uiThread.start();
+                uiHandler = new UIHandler(uiThread.getLooper(),PhotoPreviewActivity.this);
+                handleUIRequest(Constants.DISPLAY_CREATELIST_PROGRESS_BAR);
                 for (String path : photosPaths) {
                     AnalyzePhotos(path);
                 }
@@ -189,7 +183,6 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         Intent intent = null;
         ArrayList<String> storeChainCode = new ArrayList<>();
         storeChainCode.add(storeAndChainCode);
-        long newID;
 
         for(String photo: photosPaths){
             File f = new File(photo);
@@ -208,7 +201,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                             imageView.setImageDrawable(null);
                         }
                     }).show();
-            pd.dismiss();
+            handleUIRequest(Constants.HIDE_CREATELIST_PROGRESS_BAR);
             return;
         }
         else {
@@ -228,7 +221,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        pd.dismiss();
+        handleUIRequest(Constants.HIDE_CREATELIST_PROGRESS_BAR);
     }
 
     private void AnalyzePhotos(String photoPath){
@@ -299,6 +292,25 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         return rects;
     }
 
+    protected void handleUIRequest(int message)
+    {
+        Message msg = null;
+
+        switch (message){
+            case Constants.DISPLAY_CREATELIST_PROGRESS_BAR:{
+                msg = uiHandler.obtainMessage(message);
+                break;
+            }
+            case Constants.HIDE_CREATELIST_PROGRESS_BAR:{
+                msg = uiHandler.obtainMessage(message);
+                break;
+            }
+        }
+
+        if(msg != null)
+            uiHandler.sendMessage(msg);
+    }
+
     public void DrawOnImage(Bitmap photo, ImageView imageView, ArrayList<Rect> rects){
         //Create a new image bitmap and attach a brand new canvas to it
         Bitmap tempBitmap = Bitmap.createBitmap(photo.getWidth(), photo.getHeight(), Bitmap.Config.RGB_565);
@@ -317,6 +329,11 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         }
 
         imageView.setImageDrawable(new BitmapDrawable(getResources(), tempBitmap));
+    }
+
+    @Override
+    public void onBackPressed() {
+        //TODO delete the list.
     }
 
 }

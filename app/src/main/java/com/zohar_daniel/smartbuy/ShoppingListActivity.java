@@ -41,8 +41,6 @@ public class ShoppingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         listID = getIntent().getLongExtra(Constants.LIST_ID, 0);
         setContentView(R.layout.activity_shopping_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         listView=(ListView)findViewById(R.id.shopping_list);
 
         alertBuilder = new AlertDialog.Builder(ShoppingListActivity.this);

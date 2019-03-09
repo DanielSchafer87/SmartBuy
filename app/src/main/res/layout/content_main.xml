@@ -9,53 +9,36 @@
     tools:showIn="@layout/activity_main"
     android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/tvLogo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="LOGO"
-        android:layout_weight="1"
-        >
-    </TextView>
-    <TextView
-        android:id="@+id/tvStatistics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Statistics"
-        android:layout_weight="1"
-        >
-    </TextView>
-
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical">
         <Button
             android:id="@+id/btnShoppingLists"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="רשימות הקניות שלי"
-            android:layout_weight="1"
             android:onClick="moveToScreen"
+            android:background="@drawable/capsule_button_selector"
+            android:layout_marginTop="10dp"
             >
         </Button>
         <Button
             android:id="@+id/btnStatistics"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="סטטיסטיקות קניה"
-            android:layout_weight="1"
             android:onClick="moveToScreen"
-
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/capsule_button_selector"
             >
         </Button>
 
     </LinearLayout>
-
-
-
-
 
 </LinearLayout>
