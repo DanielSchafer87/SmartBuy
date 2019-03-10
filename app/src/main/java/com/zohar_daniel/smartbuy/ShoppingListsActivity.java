@@ -50,7 +50,7 @@ public class ShoppingListsActivity extends AppCompatActivity {
         });
 
         listView=(ListView)findViewById(R.id.shopping_lists);
-        final DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
+        dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
 
         dataModels = dbHelper.allLists();
         adapter = new CustomAdapter_ShoppingLists(dataModels,getApplicationContext());
