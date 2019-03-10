@@ -33,7 +33,20 @@ public final class UIHandler extends Handler
                 pd.show();
                 break;
             }
+            case Constants.DISPLAY_LOADING_ITEMS_PROGRESS_BAR:
+            {
+                pd = new ProgressDialog(context);
+                pd.setTitle("אנא המתן");
+                pd.setMessage("טוען מוצרים");
+                pd.setCancelable(false);
+                pd.show();
+                break;
+            }
             case Constants.HIDE_CREATELIST_PROGRESS_BAR:{
+                pd.dismiss();
+                break;
+            }
+            case Constants.HIDE_LOADING_ITEMS_PROGRESS_BAR:{
                 pd.dismiss();
                 break;
             }

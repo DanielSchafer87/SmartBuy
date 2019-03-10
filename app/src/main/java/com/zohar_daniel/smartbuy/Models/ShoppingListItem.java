@@ -9,6 +9,7 @@ public class ShoppingListItem {
     private long ListId;
     private String IsWeighted;
     private String TotalPrice;
+    private String Barcode;
 
     public ShoppingListItem(String name, int amount, double price, int listId, String isWeighted) {
         Name = name;
@@ -29,6 +30,17 @@ public class ShoppingListItem {
     {
 
     }
+
+    @Override
+    public String toString(){
+        return Name;
+    }
+
+    public String getBarcode() {
+        return Barcode;
+    }
+
+    public void setBarcode(String barcode) { Barcode = barcode; }
 
     public void setIsWeighted(String isWeighted){ IsWeighted = isWeighted; }
 

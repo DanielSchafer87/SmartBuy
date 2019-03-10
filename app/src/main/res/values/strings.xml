@@ -9,8 +9,11 @@
     <string name="point_symbol">.</string>
     <string name="nis_symbol">₪</string>
     <string name="bar_change_price">בחר כמות</string>
+    <string name="bar_choose_item">הוספת מוצר</string>
     <string name="accept_amount_change">אישור</string>
     <string name="reject_amount_change">ביטול</string>
+    <string name="add_new_item">הוסף מוצר</string>
+
 
 
 

@@ -52,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(ShoppingListsSchema.COLUMN_ITEMS_AMOUNT, shoppingItem.getAmount());
+        values.put(ShoppingListsSchema.COLUMN_ITEMS_TOTAL_PRICE, shoppingItem.getAmount()*shoppingItem.getPrice());
 
         int i = db.update(ShoppingListsSchema.ITEMS_TABLE, // table
                 values, // column/value
@@ -280,7 +281,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<ShoppingList> lists = new LinkedList<ShoppingList>();
         String query = "SELECT L.Id,L.Storeid,L.StoreName,L.Chainid,L.ChainName,L.Date, L.City,sum(I.TotalPrice) as TotalSum"
                 + "  FROM "+ShoppingListsSchema.LISTS_TABLE +" L"
-                + " inner join "+ShoppingListsSchema.ITEMS_TABLE+" I on I.Listid = L.Id" +
+                + " left join "+ShoppingListsSchema.ITEMS_TABLE+" I on I.Listid = L.Id" +
                 "  group by L.Id, L.ChainName ,L.Storeid,L.StoreName,L.Chainid,L.ChainName,L.Date,L.City";
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -297,7 +298,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 list.setChainName(cursor.getString(4));
                 list.setCreatedOn(cursor.getString(5));
                 list.setCity(cursor.getString(6));
-                list.setTotalSum(Double.parseDouble(cursor.getString(7)));
+                if(cursor.getString(7) == null)
+                    list.setTotalSum(0.0);
+                else
+                    list.setTotalSum(Double.parseDouble(cursor.getString(7)));
+
+
 
                 lists.add(list);
             } while (cursor.moveToNext());

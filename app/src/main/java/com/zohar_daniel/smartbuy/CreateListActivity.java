@@ -5,11 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
 import com.zohar_daniel.smartbuy.Models.ShoppingList;
@@ -127,7 +125,7 @@ public class CreateListActivity extends AppCompatActivity {
         long newID = 0;
         DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName, null, 1);
         Date date = new Date();
-        String todayDate= new SimpleDateFormat("dd-MM-yyyy").format(date);
+        String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
 
         if(dropdown_store.getSelectedItem() == null){
             new AlertDialog.Builder(CreateListActivity.this)
@@ -161,7 +159,8 @@ public class CreateListActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LIST_ID,newID);
                 break;
             case R.id.btnManual:
-                //intent = new Intent(this, StatisticsActivity.class);
+                intent = new Intent(this, ShoppingListActivity.class);
+                intent.putExtra(Constants.LIST_ID,newID);
                 break;
         }
 

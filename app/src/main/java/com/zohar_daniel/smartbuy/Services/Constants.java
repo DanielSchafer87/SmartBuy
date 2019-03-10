@@ -1,5 +1,8 @@
 package com.zohar_daniel.smartbuy.Services;
 
+import android.util.SparseIntArray;
+import android.view.Surface;
+
 public class Constants {
 
     //Clicked list in ListsActivity
@@ -18,4 +21,15 @@ public class Constants {
 
     public final static int DISPLAY_CREATELIST_PROGRESS_BAR = 1;
     public final static int HIDE_CREATELIST_PROGRESS_BAR = 0;
+    public final static int DISPLAY_LOADING_ITEMS_PROGRESS_BAR = 2;
+    public final static int HIDE_LOADING_ITEMS_PROGRESS_BAR = 3;
+
+
+    public static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+    }
 }

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 
@@ -19,9 +23,13 @@ import com.zohar_daniel.smartbuy.Models.ShoppingList;
 import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
 import com.zohar_daniel.smartbuy.Services.Constants;
 import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
+import com.zohar_daniel.smartbuy.Services.GetAllXmlItems;
 import com.zohar_daniel.smartbuy.Services.ShoppingListsSchema;
+import com.zohar_daniel.smartbuy.Threads.UIHandler;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ShoppingListActivity extends AppCompatActivity {
 
@@ -30,11 +38,17 @@ public class ShoppingListActivity extends AppCompatActivity {
     private CustomAdapter_ShoppingList adapter;
     long listID;
     View numberPickerView;
+    View addItemView;
     AlertDialog.Builder alertBuilder;
     AlertDialog amountPicker;
     AlertDialog notWeightedAmountPicker;
+    AlertDialog addItemDialog;
     DatabaseHelper dbHelper;
-    int itemClickedPosition;
+    String chainAndStore;
+    UIHandler uiHandler;
+    ArrayList<ShoppingListItem> items = null;
+    AutoCompleteTextView autoCompleteTextView;
+    ShoppingListItem selectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +61,29 @@ public class ShoppingListActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
 
         //TODO after amount change fix the amount*price.
+
+        addItemView = inflater.inflate(R.layout.add_item_dialog,null,false);
+        autoCompleteTextView = addItemView.findViewById(R.id.auto_complete_item_name);
+        alertBuilder.setView(addItemView)
+                .setPositiveButton(R.string.add_new_item,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addNewItem();
+                    }
+                }).setNegativeButton(R.string.reject_amount_change, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        addItemDialog = alertBuilder.create();
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedItem = (ShoppingListItem) parent.getItemAtPosition(position);
+            }
+        });
 
         //Weighted number picker.
         numberPickerView = inflater.inflate(R.layout.number_picker_dialog, null, false);
@@ -62,9 +99,10 @@ public class ShoppingListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Double value = Double.valueOf(before_point_picker.getValue() + "." + after_point_picker.getValue());
-                        ShoppingListItem item = dataModels.get(itemClickedPosition);
-                        item.setAmount(value);
-                        dbHelper.updateItem(item);
+                        selectedItem.setAmount(value);
+                        dbHelper.updateItem(selectedItem);
+                        adapter.clear();
+                        adapter.addAll(dbHelper.allListItems(listID));
                         adapter.notifyDataSetChanged();
                         listView.invalidateViews();
                     }
@@ -85,9 +123,10 @@ public class ShoppingListActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.accept_amount_change,new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ShoppingListItem item = dataModels.get(itemClickedPosition);
-                        item.setAmount(number_picker_not_weighted.getValue());
-                        dbHelper.updateItem(item);
+                        selectedItem.setAmount(number_picker_not_weighted.getValue());
+                        dbHelper.updateItem(selectedItem);
+                        adapter.clear();
+                        adapter.addAll(dbHelper.allListItems(listID));
                         adapter.notifyDataSetChanged();
                         listView.invalidateViews();
                     }
@@ -103,19 +142,12 @@ public class ShoppingListActivity extends AppCompatActivity {
         dataModels = dbHelper.allListItems(listID);
         adapter = new CustomAdapter_ShoppingList(dataModels,getApplicationContext());
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //DataModel dataModel= dataModels.get(position);
-            }
-        });
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int pos, long id) {
-                final int position = pos;
-                itemClickedPosition = pos;
+                selectedItem = dataModels.get(pos);
                 new AlertDialog.Builder(ShoppingListActivity.this)
                         .setTitle("אנא בחר את הפעולה הרצויה")
                         .setNeutralButton("ביטול", new DialogInterface.OnClickListener() {
@@ -127,14 +159,13 @@ public class ShoppingListActivity extends AppCompatActivity {
                         .setPositiveButton("מחיקת מוצר", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteItem(position);
+                                deleteItem();
                             }
                         })
                         .setNegativeButton("עדכון כמות", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ShoppingListItem item = dataModels.get(position);
-                                if(item.getIsWeighted().equals("1"))
+                                if(selectedItem.getIsWeighted().equals("1"))
                                     amountPicker.show();
                                 else
                                     notWeightedAmountPicker.show();
@@ -149,24 +180,22 @@ public class ShoppingListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                getAllItemsFromXML();
+
             }
         });
     }
 
-    private void deleteItem(int pos){
-        final int position = pos;
+    private void deleteItem(){
         new AlertDialog.Builder(ShoppingListActivity.this)
                 .setTitle("מחיקת מוצר")
                 .setMessage("האם ברצונך למחוק את המוצר:" +
-                        "\n" + dataModels.get(pos).getName())
+                        "\n" + selectedItem.getName())
                 .setPositiveButton("מחק", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ShoppingListItem itemToDelete = dataModels.get(position);
-                        dbHelper.deleteItem(itemToDelete);
-                        adapter.remove(itemToDelete);
+                        dbHelper.deleteItem(selectedItem);
+                        adapter.remove(selectedItem);
                         adapter.notifyDataSetChanged();
                         listView.invalidateViews();
                     }
@@ -177,6 +206,81 @@ public class ShoppingListActivity extends AppCompatActivity {
                         //do nothing.
                     }
                 }).show();
+    }
+
+    private void getAllItemsFromXML(){
+        List<ShoppingList> shoppingLists =  dbHelper.allLists();
+
+        HandlerThread uiThread = new HandlerThread("UIHandler");
+        uiThread.start();
+        uiHandler = new UIHandler(uiThread.getLooper(),ShoppingListActivity.this);
+        handleUIRequest(Constants.DISPLAY_LOADING_ITEMS_PROGRESS_BAR);
+
+        if(items == null) {
+            for (ShoppingList sl : shoppingLists) {
+                if (sl.getId() == listID) {
+                    chainAndStore = sl.getChainId() + "-" + sl.getStoreId();
+                }
+            }
+            GetAllXmlItems xmlAllItems = new GetAllXmlItems();
+            try {
+                items = xmlAllItems.execute(chainAndStore).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            ArrayAdapter<ShoppingListItem> adapter = new ArrayAdapter<ShoppingListItem>
+                    (this, android.R.layout.select_dialog_item, items);
+            autoCompleteTextView.setAdapter(adapter);
+        }
+
+        handleUIRequest(Constants.HIDE_LOADING_ITEMS_PROGRESS_BAR);
+        addItemDialog.show();
+    }
+
+    protected void handleUIRequest(int message)
+    {
+        Message msg = null;
+
+        switch (message){
+            case Constants.DISPLAY_CREATELIST_PROGRESS_BAR:{
+                msg = uiHandler.obtainMessage(message);
+                break;
+            }
+            case Constants.HIDE_CREATELIST_PROGRESS_BAR:{
+                msg = uiHandler.obtainMessage(message);
+                break;
+            }
+            case Constants.DISPLAY_LOADING_ITEMS_PROGRESS_BAR:{
+                msg = uiHandler.obtainMessage(message);
+                break;
+            }
+            case Constants.HIDE_LOADING_ITEMS_PROGRESS_BAR:{
+                msg = uiHandler.obtainMessage(message);
+                break;
+            }
+        }
+
+        if(msg != null)
+            uiHandler.sendMessage(msg);
+    }
+
+    public void addNewItem(){
+
+        selectedItem.setListId(listID);
+        dbHelper.addItem(selectedItem);
+        adapter.clear();
+        adapter.addAll(dbHelper.allListItems(listID));
+        adapter.notifyDataSetChanged();
+        listView.invalidateViews();
+        autoCompleteTextView.setText("");
+
+        if(selectedItem.getIsWeighted().equals("1"))
+            amountPicker.show();
+        else
+            notWeightedAmountPicker.show();
     }
 
     @Override
