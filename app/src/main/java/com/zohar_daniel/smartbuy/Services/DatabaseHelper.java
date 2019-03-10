@@ -73,7 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
      //Create new shoppingItem
-     public void addItem(ShoppingListItem shoppingItem) {
+     public long addItem(ShoppingListItem shoppingItem) {
          SQLiteDatabase db = this.getWritableDatabase();
          ContentValues values = new ContentValues();
 
@@ -91,8 +91,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          //
          values.put(ShoppingListsSchema.COLUMN_ITEMS_TOTAL_PRICE, shoppingItem.getAmount()*shoppingItem.getPrice());
          // run insert
-         db.insert(ShoppingListsSchema.ITEMS_TABLE,null, values);
+         long pos = db.insert(ShoppingListsSchema.ITEMS_TABLE,null, values);
          db.close();
+
+         return pos;
      }
 
      //Get all items by list id
@@ -107,7 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 shoppingItem = new ShoppingListItem();
-                shoppingItem.setId(Integer.parseInt(cursor.getString(0)));
+                shoppingItem.setId(Long.parseLong(cursor.getString(0)));
                 shoppingItem.setName(cursor.getString(1));
                 shoppingItem.setAmount(Double.valueOf(cursor.getString(2)));
                 shoppingItem.setPrice(Double.parseDouble(cursor.getString(3)));
@@ -134,7 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          if (cursor.moveToFirst()) {
              do {
                  shoppingItem = new ShoppingListItem();
-                 shoppingItem.setId(Integer.parseInt(cursor.getString(0)));
+                 shoppingItem.setId(Long.parseLong(cursor.getString(0)));
                  shoppingItem.setName(cursor.getString(1));
                  shoppingItem.setAmount(Integer.parseInt(cursor.getString(2)));
                  shoppingItem.setPrice(Double.parseDouble(cursor.getString(3)));

@@ -2,7 +2,7 @@ package com.zohar_daniel.smartbuy.Models;
 
 public class ShoppingListItem {
 
-    private  int Id;
+    private  long Id;
     private String Name;
     private double Amount;
     private double Price;
@@ -78,11 +78,11 @@ public class ShoppingListItem {
         ListId = listId;
     }
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         Id = id;
     }
 

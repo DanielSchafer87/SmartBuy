@@ -268,15 +268,13 @@ public class ShoppingListActivity extends AppCompatActivity {
     }
 
     public void addNewItem(){
-
         selectedItem.setListId(listID);
-        dbHelper.addItem(selectedItem);
+        selectedItem.setId(dbHelper.addItem(selectedItem));
         adapter.clear();
         adapter.addAll(dbHelper.allListItems(listID));
         adapter.notifyDataSetChanged();
         listView.invalidateViews();
         autoCompleteTextView.setText("");
-
         if(selectedItem.getIsWeighted().equals("1"))
             amountPicker.show();
         else
