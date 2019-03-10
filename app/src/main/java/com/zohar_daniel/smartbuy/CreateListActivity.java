@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -175,7 +176,8 @@ public class CreateListActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LIST_ID,newID);
                 break;
             case R.id.btnManual:
-                //intent = new Intent(this, StatisticsActivity.class);
+                intent = new Intent(this, ShoppingListActivity.class);
+                intent.putExtra(Constants.LIST_ID,newID);
                 break;
         }
 

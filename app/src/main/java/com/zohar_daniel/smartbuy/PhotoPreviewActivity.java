@@ -2,6 +2,7 @@ package com.zohar_daniel.smartbuy;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,6 +59,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     String storeAndChainCode = "";
     long newListID;
     UIHandler uiHandler;
+    Intent takePictureIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +124,7 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     }
 
     public void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go

@@ -35,14 +35,14 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
-public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListItem[]> {
+public class GetAllXmlItems extends AsyncTask<String,Void, ArrayList<ShoppingListItem>> {
+
     @Override
-    protected ShoppingListItem[] doInBackground(ArrayList<String>... parms) {
+    protected ArrayList<ShoppingListItem> doInBackground(String... parms) {
 
         ArrayList<ShoppingListItem> shoppingListItems = new ArrayList<>();
 
-        ArrayList<String> barcodes = parms[1];
-        String path = "http://smartbuy.spinframe.online/items/"+parms[0].get(0)+".xml";
+        String path = "http://smartbuy.spinframe.online/items/"+parms[0]+".xml";
 
         try {
 
@@ -90,8 +90,7 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
                         String text = myParser.getText().trim();
 
                         if(!text.equals("")){
-                            if(isItemCode && barcodes.contains(text)) {
-                                barcodes.remove(text);
+                            if(isItemCode) {
                                 isBarcodeExist = true;
                                 item = new ShoppingListItem();
                                 item.setBarcode(text);
@@ -108,9 +107,6 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
                                 isBarcodeExist = false;
                                 item.setPrice(Double.valueOf(text));
                                 shoppingListItems.add(item);
-                                if(barcodes.size() == 0){
-                                    return convertToShoppingListItemArray(shoppingListItems);
-                                }
                             }
                         }
                         break;
@@ -140,16 +136,6 @@ public class GetXmlItems extends AsyncTask<ArrayList<String>,Void, ShoppingListI
             return null;
         }
 
-        return convertToShoppingListItemArray(shoppingListItems);
-    }
-
-    public ShoppingListItem[] convertToShoppingListItemArray(ArrayList<ShoppingListItem> items){
-
-        ShoppingListItem[] itemsArray = new ShoppingListItem[items.size()];
-        for(int i=0; i < items.size(); i++){
-            itemsArray[i] = items.get(i);
-        }
-
-        return itemsArray;
+        return shoppingListItems;
     }
 }
