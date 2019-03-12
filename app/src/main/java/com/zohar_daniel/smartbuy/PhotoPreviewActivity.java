@@ -3,9 +3,12 @@ package com.zohar_daniel.smartbuy;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -25,6 +28,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +37,7 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.zohar_daniel.smartbuy.Models.ShoppingList;
 import com.zohar_daniel.smartbuy.Models.ShoppingListItem;
 import com.zohar_daniel.smartbuy.Services.Constants;
 import com.zohar_daniel.smartbuy.Services.DatabaseHelper;
@@ -45,6 +50,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class PhotoPreviewActivity extends AppCompatActivity {
@@ -60,6 +66,8 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     long newListID;
     UIHandler uiHandler;
     Intent takePictureIntent;
+    Button btnDeletePhoto;
+    Button btnDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +89,11 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         storeAndChainCode = getIntent().getStringExtra(Constants.CHAIN_AND_STORE_CODE);
         newListID = getIntent().getLongExtra(Constants.LIST_ID,0);
         imageView = findViewById(R.id.imageView);
+        btnDeletePhoto = findViewById(R.id.btnDeletePhoto);
+        btnDone = findViewById(R.id.btnDone);
+        btnDone.setEnabled(false);
+        btnDeletePhoto.setEnabled(false);
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,  Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
@@ -108,6 +121,20 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 dispatchTakePictureIntent();
                 break;
             case R.id.btnDone:
+                /*
+                if(photosPaths.size() == 0){
+                    new AlertDialog.Builder(PhotoPreviewActivity.this)
+                            .setTitle("לא צולמו קבלות")
+                            .setMessage("אנא צלם קבלה")
+                            .setNeutralButton("אישור", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    imageView.setImageDrawable(null);
+                                }
+                            }).show();
+                    break;
+                }
+                */
                 threadsCompleteCounter = 0;
                 HandlerThread uiThread = new HandlerThread("UIHandler");
                 uiThread.start();
@@ -116,6 +143,9 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 for (String path : photosPaths) {
                     AnalyzePhotos(path);
                 }
+                break;
+            case R.id.btnDeletePhoto:
+                deletePhoto();
                 break;
         }
 
@@ -162,8 +192,9 @@ public class PhotoPreviewActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            final Bitmap photo = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            imageView.setImageBitmap(photo);
+            btnDeletePhoto.setEnabled(true);
+            btnDone.setEnabled(true);
+            imageView.setImageURI(Uri.parse(mCurrentPhotoPath));
 
             /*
             //FOR DEBBUG ONLY (includes rects around recognized barcodes)
@@ -198,14 +229,10 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         ArrayList<String> storeChainCode = new ArrayList<>();
         storeChainCode.add(storeAndChainCode);
 
-        for(String photo: photosPaths){
-            File f = new File(photo);
-            f.delete();
-        }
-
-        photosPaths.clear();
+        deleteAllPhotos();
 
         if(barcodes.size() == 0){
+            handleUIRequest(Constants.HIDE_CREATELIST_PROGRESS_BAR);
             new AlertDialog.Builder(PhotoPreviewActivity.this)
                     .setTitle("לא נמצאו ברקודים")
                     .setMessage("אנא צלם שוב את הקבלה")
@@ -215,7 +242,9 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                             imageView.setImageDrawable(null);
                         }
                     }).show();
-            handleUIRequest(Constants.HIDE_CREATELIST_PROGRESS_BAR);
+            btnDeletePhoto.setEnabled(false);
+            btnDone.setEnabled(false);
+            imageView.setImageURI(null);
             return;
         }
         else {
@@ -238,10 +267,14 @@ public class PhotoPreviewActivity extends AppCompatActivity {
         handleUIRequest(Constants.HIDE_CREATELIST_PROGRESS_BAR);
     }
 
-    private void AnalyzePhotos(String photoPath){
-        final Bitmap photo = BitmapFactory.decodeFile(photoPath);
+    private void AnalyzePhotos(String photoPath) {
 
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(photo);
+        FirebaseVisionImage image = null;
+        try {
+            image = FirebaseVisionImage.fromFilePath(PhotoPreviewActivity.this, Uri.parse("file://"+photoPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
 
@@ -325,6 +358,34 @@ public class PhotoPreviewActivity extends AppCompatActivity {
             uiHandler.sendMessage(msg);
     }
 
+    private void deleteAllPhotos(){
+        if(photosPaths.size() > 0) {
+            for (String photo : photosPaths) {
+                File f = new File(photo);
+                f.delete();
+            }
+            photosPaths.clear();
+        }
+    }
+
+    private void deletePhoto(){
+        File f = new File(mCurrentPhotoPath);
+        f.delete();
+
+        photosPaths.remove(mCurrentPhotoPath);
+
+        if(photosPaths.size() > 0) {
+            mCurrentPhotoPath = photosPaths.get(photosPaths.size() - 1);
+            imageView.setImageURI(Uri.parse(mCurrentPhotoPath));
+        }
+        else{
+            btnDeletePhoto.setEnabled(false);
+            btnDone.setEnabled(false);
+            imageView.setImageURI(null);
+        }
+    }
+
+
     public void DrawOnImage(Bitmap photo, ImageView imageView, ArrayList<Rect> rects){
         //Create a new image bitmap and attach a brand new canvas to it
         Bitmap tempBitmap = Bitmap.createBitmap(photo.getWidth(), photo.getHeight(), Bitmap.Config.RGB_565);
@@ -347,7 +408,20 @@ public class PhotoPreviewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //TODO delete the list.
+        ShoppingList list = null;
+        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
+        List<ShoppingList> lists = dbHelper.allLists();
+        for(ShoppingList shoppingList: lists){
+            if(shoppingList.getId() == newListID){
+                list = shoppingList;
+            }
+        }
+        dbHelper.deleteList(list);
+
+        deleteAllPhotos();
+
+        Intent intent = new Intent(this, CreateListActivity.class);
+        startActivity(intent);
     }
 
 }

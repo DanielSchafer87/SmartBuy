@@ -185,4 +185,10 @@ public class CreateListActivity extends AppCompatActivity {
             startActivity(intent);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ShoppingListsActivity.class);
+        startActivity(intent);
+    }
 }

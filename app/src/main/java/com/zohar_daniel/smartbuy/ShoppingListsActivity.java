@@ -75,13 +75,11 @@ public class ShoppingListsActivity extends AppCompatActivity {
                         .setPositiveButton("מחק", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //TODO implement delete list.
                                 ShoppingList list = dataModels.get(position);
                                 dbHelper.deleteList(list);
                                 adapter.remove(list);
                                 adapter.notifyDataSetChanged();
                                 listView.invalidateViews();
-
                             }
 
                         })

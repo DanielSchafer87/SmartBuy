@@ -73,8 +73,6 @@ public class ShoppingListActivity extends AppCompatActivity {
         alertBuilder = new AlertDialog.Builder(ShoppingListActivity.this);
         LayoutInflater inflater = getLayoutInflater();
 
-        //TODO after amount change fix the amount*price.
-
         addItemView = inflater.inflate(R.layout.add_item_dialog,null,false);
         autoCompleteTextView = addItemView.findViewById(R.id.auto_complete_item_name);
         alertBuilder.setView(addItemView)
@@ -296,6 +294,17 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(adapter.getCount() == 0){
+            ShoppingList list = null;
+            List<ShoppingList> lists = dbHelper.allLists();
+            for(ShoppingList shoppingList: lists){
+                if(shoppingList.getId() == listID){
+                    list = shoppingList;
+                }
+            }
+            dbHelper.deleteList(list);
+        }
+
         Intent intent = new Intent(this, ShoppingListsActivity.class);
         startActivity(intent);
     }
