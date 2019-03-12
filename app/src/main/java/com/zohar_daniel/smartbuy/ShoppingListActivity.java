@@ -1,8 +1,11 @@
 package com.zohar_daniel.smartbuy;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.os.Message;
@@ -18,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.zohar_daniel.smartbuy.Adapters.CustomAdapter_ShoppingList;
 import com.zohar_daniel.smartbuy.Models.ShoppingList;
@@ -191,10 +195,27 @@ public class ShoppingListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getAllItemsFromXML();
 
+                boolean internetOk = isNetworkAvailable();
+
+                if(internetOk)
+                {
+                    getAllItemsFromXML();
+                }
+                else
+                {
+                    Toast.makeText(getBaseContext(), "אין חיבור לרשת",Toast.LENGTH_LONG).show();
+
+                }
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void deleteItem(){
