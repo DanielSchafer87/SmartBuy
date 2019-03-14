@@ -27,9 +27,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,6 +58,7 @@ import java.util.concurrent.ExecutionException;
 public class PhotoPreviewActivity extends AppCompatActivity {
 
     static final int REQUEST_TAKE_PHOTO = 100;
+    DatabaseHelper dbHelper;
     String mCurrentPhotoPath;
     ImageView imageView;
     ArrayList<String> photosPaths = new ArrayList<>();
@@ -73,12 +76,23 @@ public class PhotoPreviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_preview);
+        dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
 
         //click on logo redirect to mainActivity
         ImageView logo = (ImageView)findViewById(R.id.logo);
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ShoppingList list = null;
+                List<ShoppingList> lists = dbHelper.allLists();
+                for(ShoppingList shoppingList: lists){
+                    if(shoppingList.getId() == newListID){
+                        list = shoppingList;
+                    }
+                }
+                dbHelper.deleteList(list);
+
+                deleteAllPhotos();
 
                 Intent intent = new Intent(getBaseContext(),MainActivity.class);
                 startActivity(intent);
@@ -121,20 +135,6 @@ public class PhotoPreviewActivity extends AppCompatActivity {
                 dispatchTakePictureIntent();
                 break;
             case R.id.btnDone:
-                /*
-                if(photosPaths.size() == 0){
-                    new AlertDialog.Builder(PhotoPreviewActivity.this)
-                            .setTitle("לא צולמו קבלות")
-                            .setMessage("אנא צלם קבלה")
-                            .setNeutralButton("אישור", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    imageView.setImageDrawable(null);
-                                }
-                            }).show();
-                    break;
-                }
-                */
                 threadsCompleteCounter = 0;
                 HandlerThread uiThread = new HandlerThread("UIHandler");
                 uiThread.start();
@@ -408,8 +408,8 @@ public class PhotoPreviewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         ShoppingList list = null;
-        DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext(), ShoppingListsSchema.databaseName , null , 1);
         List<ShoppingList> lists = dbHelper.allLists();
         for(ShoppingList shoppingList: lists){
             if(shoppingList.getId() == newListID){

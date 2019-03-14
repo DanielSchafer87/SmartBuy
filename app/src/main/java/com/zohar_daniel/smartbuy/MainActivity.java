@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
          tvTotalExpenses =(TextView)findViewById(R.id.tvTotalExpenses);
          tvCurrentMonth = (TextView)findViewById(R.id.tvMonth);
 
-         hebMonthList = new String[]{"ינואר","מפרואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"};
+        hebMonthList = new String[]{"ינואר","מפרואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"};
 
 /*
         ShoppingList l = new ShoppingList(7,"שופרסל דיל נווה שאנן","5","שפרסל","2018-07-23","חיפה");

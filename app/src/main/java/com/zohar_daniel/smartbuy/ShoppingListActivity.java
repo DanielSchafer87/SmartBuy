@@ -53,7 +53,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     UIHandler uiHandler;
     ArrayList<ShoppingListItem> items = null;
     AutoCompleteTextView autoCompleteTextView;
-    ShoppingListItem selectedItem;
+    ShoppingListItem selectedItem = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +97,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedItem = (ShoppingListItem) parent.getItemAtPosition(position);
+                int x = 0;
             }
         });
 
@@ -116,6 +117,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                         Double value = Double.valueOf(before_point_picker.getValue() + "." + after_point_picker.getValue());
                         selectedItem.setAmount(value);
                         dbHelper.updateItem(selectedItem);
+                        selectedItem = null;
                         adapter.clear();
                         adapter.addAll(dbHelper.allListItems(listID));
                         adapter.notifyDataSetChanged();
@@ -140,6 +142,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         selectedItem.setAmount(number_picker_not_weighted.getValue());
                         dbHelper.updateItem(selectedItem);
+                        selectedItem = null;
                         adapter.clear();
                         adapter.addAll(dbHelper.allListItems(listID));
                         adapter.notifyDataSetChanged();
@@ -299,18 +302,30 @@ public class ShoppingListActivity extends AppCompatActivity {
             uiHandler.sendMessage(msg);
     }
 
-    public void addNewItem(){
-        selectedItem.setListId(listID);
-        selectedItem.setId(dbHelper.addItem(selectedItem));
-        adapter.clear();
-        adapter.addAll(dbHelper.allListItems(listID));
-        adapter.notifyDataSetChanged();
-        listView.invalidateViews();
-        autoCompleteTextView.setText("");
-        if(selectedItem.getIsWeighted().equals("1"))
-            amountPicker.show();
-        else
-            notWeightedAmountPicker.show();
+    public void addNewItem() {
+        if (selectedItem != null){
+            selectedItem.setListId(listID);
+            selectedItem.setId(dbHelper.addItem(selectedItem));
+            adapter.clear();
+            adapter.addAll(dbHelper.allListItems(listID));
+            adapter.notifyDataSetChanged();
+            listView.invalidateViews();
+            autoCompleteTextView.setText("");
+            if (selectedItem.getIsWeighted().equals("1"))
+                amountPicker.show();
+            else
+                notWeightedAmountPicker.show();
+        }
+        else{
+            new AlertDialog.Builder(ShoppingListActivity.this)
+                    .setTitle("מוצר לא קיים")
+                    .setMessage("המוצר שהוקלד אינו קיים")
+                    .setNeutralButton("אישור", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).show();
+        }
     }
 
     @Override

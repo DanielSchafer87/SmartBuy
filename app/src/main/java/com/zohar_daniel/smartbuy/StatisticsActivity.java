@@ -106,28 +106,32 @@ public class StatisticsActivity extends  AppCompatActivity
         String to = editText_dateTo.getText().toString();
         to = getDateForSearch(to);
 
-       boolean isFromGreateerto =  ISDate1GreaterDatew(from,to);
+       boolean isFromGreateerto =  ISDate1GreaterDate(from,to);
 
        if(isFromGreateerto)
        {
            Toast.makeText(getBaseContext(), "טווח התאריכים שגוי",Toast.LENGTH_LONG).show();
        }else
        {
-
         //Set results
         String f = "";
         f = db.GetTotalExpenses(from ,to );
-        tvTotalExpenses.setText("₪"+f);
-        f = db.GetMostPurchasedProduct(from ,to );
-        tvmostPurchasedProduct.setText(f);
-        f = db.GetPopularStore(from ,to );
-        tvpopularStore.setText(f);
+        if(f == " ") {
+            Toast.makeText(getBaseContext(), "אין נתונים בין התאריכים שנבחרו",Toast.LENGTH_LONG).show();
+        }
+        else{
+            tvTotalExpenses.setText("₪" + f);
+            f = db.GetMostPurchasedProduct(from, to);
+            tvmostPurchasedProduct.setText(f);
+            f = db.GetPopularStore(from, to);
+            tvpopularStore.setText(f);
+        }
        }
 
 
     }
 
-    public  boolean ISDate1GreaterDatew(String d1,String d2)
+    public boolean ISDate1GreaterDate(String d1,String d2)
     {
         try{
 
@@ -152,7 +156,7 @@ public class StatisticsActivity extends  AppCompatActivity
 
     public void SetDate(View view)
     {
-        int day=23 , month=04 ,year=2018;
+        int day=0 , month=0 ,year=1900;
 
         // indict which button pressed
         btnId = view.getId();
@@ -219,6 +223,7 @@ public class StatisticsActivity extends  AppCompatActivity
             return "";
         }
     }
+
     //map format dd/MM/yyyy to yyyy-MM-dd
     public static String getDateForSearch(String dateInString) {
 

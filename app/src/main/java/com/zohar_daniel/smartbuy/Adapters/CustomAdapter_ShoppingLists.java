@@ -36,21 +36,8 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<ShoppingList> impl
 
     @Override
     public void onClick(View v) {
-        /*
-        int position=(Integer) v.getTag();
-        Object object= getItem(position);
-        ShoppingList dataModel=(ShoppingList)object;
 
-        switch (v.getId())
-        {
-            case R.id.row_shopping_lists:
-                //TODO send invoice id to sql to get the list on items.
-                break;
-        }
-        */
     }
-
-    private int lastPosition = -1;
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -85,11 +72,24 @@ public class CustomAdapter_ShoppingLists extends ArrayAdapter<ShoppingList> impl
 
         viewHolder.txtStoreName.setText(dataModel.getStoreName());
         viewHolder.txtChainName.setText(dataModel.getChainName());
-        viewHolder.date.setText(dataModel.getCreatedOn());
-        //TODO calculate amount in SQL and create method to get the amount.
+        viewHolder.date.setText(getDateForSearch(dataModel.getCreatedOn()));
         viewHolder.amount.setText(String.valueOf(dataModel.getTotalSum()));
         // Return the completed view to render on screen
         return convertView;
     }
+
+    //map format yyyy-MM-dd to dd/MM/yyyy
+    public static String getDateForSearch(String dateInString) {
+
+        String[] d = dateInString.split("-");
+
+        try{
+            return d[2]+"/"+d[1]+"/"+d[0];
+        }catch (Exception e)
+        {
+            return "";
+        }
+    }
+
 }
 
